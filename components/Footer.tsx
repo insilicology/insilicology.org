@@ -1,6 +1,5 @@
-// components/Footer.js
+// components/Footer.tsx
 import Link from 'next/link';
-import Image from 'next/image';
 import { FacebookIcon, LinkedinIcon, Mail, MapPin, Phone, YoutubeIcon, MessageCircle } from 'lucide-react';
 
 const Footer = () => {

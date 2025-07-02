@@ -153,7 +153,7 @@ export default function RefundPolicy() {
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">11. Policy Updates</h2>
         <p className="text-gray-700">
-          We reserve the right to update this refund policy at any time. Changes will be posted on this page with an updated "Last Updated" date. Continued use of our services after policy changes constitutes acceptance of the new terms.
+          We reserve the right to update this refund policy at any time. Changes will be posted on this page with an updated &quot;Last Updated&quot; date. Continued use of our services after policy changes constitutes acceptance of the new terms.
         </p>
 
         <div className="border-t border-gray-200 pt-6 mt-8">

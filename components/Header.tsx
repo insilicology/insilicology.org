@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MenuIcon, X, Search } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { MenuIcon, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AuthButton from './AuthButton';
 
@@ -16,65 +15,9 @@ const navLinks = [
   { label: "Contact", route: "/contact" },
 ];
 
-type CourseType = {
-  title: string;
-  slug: string;
-  poster: string;
-  type: string;
-  duration: string;
-};
-
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<CourseType[]>([]);
-  const [searchOpen, setSearchOpen] = useState(false);
   const router = useRouter();
-  const searchRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setSearchOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Debounced search query effect
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    const timeoutId = setTimeout(async () => {
-      const supabase = createClientComponentClient();
-      
-      const { data, error } = await supabase
-        .from('courses')
-        .select('title,slug,poster,type,duration')
-        .ilike('title', `%${searchQuery.trim()}%`)
-        .limit(10);
-
-      if (error) {
-        console.error('Supabase search error:', error);
-        setSearchResults([]);
-      } else {
-        setSearchResults(data || []);
-      }
-    }, 10);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
-
-  const onSearchSelect = (url: string) => {
-    setSearchOpen(false);
-    setSearchQuery('');
-    router.push(url);
-  };
 
   const handleMobileNavClick = (route: string) => {
     setMenuOpen(false);

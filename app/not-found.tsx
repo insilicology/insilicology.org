@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Home, Search, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
@@ -22,8 +21,8 @@ export default function NotFound() {
         Oops! Page Not Found
       </h1>
       <p className="text-lg text-gray-600 mb-8 max-w-xl">
-        The page you're looking for might have been moved, deleted, or you entered the wrong URL. 
-        Let's get you back on track to discovering computational biology solutions.
+        The page you&apos;re looking for might have been moved, deleted, or you entered the wrong URL. 
+        Let&apos;s get you back on track to discovering computational biology solutions.
       </p>
 
       {/* Action Buttons */}
@@ -51,7 +50,7 @@ export default function NotFound() {
           Need Help?
         </h3>
         <p className="text-gray-600 mb-4">
-          Can't find what you're looking for? Our computational biology experts are here to help.
+          Can&apos;t find what you&apos;re looking for? Our computational biology experts are here to help.
         </p>
         <Link 
           href="/contact" 

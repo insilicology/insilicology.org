@@ -100,7 +100,7 @@ export default function StatsSection() {
             </h3>
             <p className="text-gray-600 mb-6">
               Our expertise has been recognized by pharmaceutical companies, research institutions, 
-              and universities worldwide. We're committed to advancing scientific discovery through 
+              and universities worldwide. We&apos;re committed to advancing scientific discovery through 
               innovative computational approaches.
             </p>
             <div className="flex flex-wrap justify-center gap-8 opacity-60">

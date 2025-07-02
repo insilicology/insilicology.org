@@ -39,7 +39,7 @@ export default function ContactPage() {
               <MessageCircle className="w-10 h-10 text-amber-600" />
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
-              Let's Work Together
+              Let&apos;s Work Together
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Ready to advance your computational biology research? Get in touch with our expert team for 
@@ -57,8 +57,8 @@ export default function ContactPage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
               <p className="text-lg text-gray-600 mb-8">
-                Whether you're looking for computational biology consulting, research collaboration, 
-                or have questions about our services, we're here to help.
+                Whether you&apos;re looking for computational biology consulting, research collaboration, 
+                or have questions about our services, we&apos;re here to help.
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function ContactPage() {
                       Business Hours
                     </h3>
                     <p className="text-gray-600 mb-4">
-                      When we're available for consultation
+                      When we&apos;re available for consultation
                     </p>
                     <div className="text-purple-600 font-semibold space-y-1">
                       <p>Mon-Fri: 9:00 AM - 6:00 PM</p>

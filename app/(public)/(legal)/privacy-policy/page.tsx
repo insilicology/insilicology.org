@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
         <h1 className="text-4xl font-bold text-gray-900">Privacy Policy</h1>
 
         <p className="text-lg text-gray-700">
-          Insilicology ("we", "us", or "our") is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website https://insilicology.org and use our educational services. Please read this policy carefully to understand our practices.
+          Insilicology (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website https://insilicology.org and use our educational services. Please read this policy carefully to understand our practices.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">1. Information We Collect</h2>
@@ -125,7 +125,7 @@ export default function PrivacyPolicy() {
           <li><strong>Withdrawal:</strong> Withdraw consent where processing is based on consent</li>
         </ul>
 
-        <h2 className="text-2xl font-semibold text-gray-900 mt-8">7. Children's Privacy</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mt-8">7. Children&apos;s Privacy</h2>
         <p className="text-gray-700">
           Our services are not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
         </p>
@@ -142,7 +142,7 @@ export default function PrivacyPolicy() {
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">10. Changes to This Privacy Policy</h2>
         <p className="text-gray-700">
-          We may update this Privacy Policy from time to time to reflect changes in our practices or applicable laws. We will notify you of any material changes by posting the updated policy on our website and updating the "Last Updated" date.
+          We may update this Privacy Policy from time to time to reflect changes in our practices or applicable laws. We will notify you of any material changes by posting the updated policy on our website and updating the &quot;Last Updated&quot; date.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">11. Contact Us</h2>

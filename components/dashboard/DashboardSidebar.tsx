@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown, LayoutDashboard, Users, CreditCard, BookOpen, BookMarked, Video, ShoppingCart } from "lucide-react";
+import { ChevronDown, LayoutDashboard, Users, CreditCard, BookOpen, BookMarked } from "lucide-react";
 
 type SubMenuItem = { name: string; href: string };
 

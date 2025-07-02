@@ -10,10 +10,6 @@ import {
   Search,
   Box,
   Dna,
-  Zap,
-  Activity,
-  Brain,
-  TestTube
 } from 'lucide-react';
 
 const services = [

@@ -9,7 +9,6 @@ import { extractTextFromPortableText } from "@/utils/blog/extractTextFromPortabl
 import { Post } from "@/types/blog.type";
 
 export default function BlogList() {  
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedAuthor, setSelectedAuthor] = useState("All");
   const [selectedYear, setSelectedYear] = useState("All");

@@ -16,18 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
-
-type PublicUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  gender: string | null;
-  country: string | null;
-  whatsapp: string | null;
-  facebook: string | null;
-  telegram: string | null;
-  role: string;
-};
+import { PublicUser } from "@/types/users.type";
 
 export default function DashboardPage() {
   const supabase = createClientComponentClient();
@@ -133,7 +122,7 @@ export default function DashboardPage() {
     return () => {
       mounted = false;
     };
-  }, [supabase.auth]);
+  }, [supabase, supabase.auth]);
 
   if (loading) {
     return (
@@ -196,7 +185,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Welcome back, {user.name || 'Learner'}! 👋
         </h1>
-        <p className="text-gray-600">Here's what's happening with your learning journey</p>
+        <p className="text-gray-600">Here&apos;s what&apos;s happening with your learning journey</p>
       </div>
 
       {/* Stats Cards */}
@@ -298,7 +287,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="font-medium text-gray-700">Course Progress</p>
-                <p className="text-sm text-gray-500">You're making great progress!</p>
+                <p className="text-sm text-gray-500">You&apos;re making great progress!</p>
               </div>
             </div>
             
