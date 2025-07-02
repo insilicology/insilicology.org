@@ -122,7 +122,7 @@ const Footer = () => {
       {/* Bottom Section */}
       <div className="text-center max-w-7xl mx-auto py-8 px-3 mt-6 border-t border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
         <div className="text-gray-400">
-          <p>&copy; {new Date().getFullYear()} <strong>Insilicology</strong>, All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} <strong>Insilicology</strong>, All rights reserved. Website developed by <Link href="https://agency.oimi.io" className="font-bold hover:text-amber-400 transition-colors">Oimi Web Agency</Link>.</p>
         </div>
         <div className="text-center sm:text-right">
           <p className="text-gray-400">
