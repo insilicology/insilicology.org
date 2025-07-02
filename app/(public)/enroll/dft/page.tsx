@@ -22,17 +22,6 @@ type FormState = {
   agreement: boolean;
 };
 
-const REQUIRED_FIELDS = [
-  "full_name",
-  "email",
-  "country",
-  "experience",
-  "comments",
-  "payment_method",
-  "payment_screenshot",
-  "agreement",
-];
-
 const PAYMENT_METHODS = [
   { label: "UPI", value: "UPI" },
   { label: "Paypal", value: "Paypal" },
@@ -174,7 +163,7 @@ export default function DFTEnrollPage() {
     // Upload file to Supabase Storage
     const fileExt = file.name.split(".").pop();
     const filePath = `dft/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("payment-ss")
       .upload(filePath, file, { cacheControl: "3600", upsert: false });
 

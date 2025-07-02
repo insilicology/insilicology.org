@@ -17,12 +17,12 @@ export default function TermsOfService() {
         <h1 className="text-4xl font-bold text-gray-900">Terms of Service</h1>
 
         <p className="text-lg text-gray-700">
-          Welcome to Insilicology! These Terms of Service ("Terms") govern your use of our educational platform and services. By accessing or using our website at https://insilicology.org, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use our services.
+          Welcome to Insilicology! These Terms of Service (&quot;Terms&quot;) govern your use of our educational platform and services. By accessing or using our website at https://insilicology.org, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use our services.
         </p>
         
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">1. Acceptance of Terms</h2>
         <p className="text-gray-700">
-          By accessing and using Insilicology's website and services, you acknowledge that you have read, understood, and agree to be bound by these Terms. These Terms constitute a legally binding agreement between you and Insilicology regarding your use of our educational platform.
+          By accessing and using Insilicology&apos;s website and services, you acknowledge that you have read, understood, and agree to be bound by these Terms. These Terms constitute a legally binding agreement between you and Insilicology regarding your use of our educational platform.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">2. Description of Services</h2>
@@ -64,11 +64,11 @@ export default function TermsOfService() {
           <li>Violate any applicable laws or regulations</li>
           <li>Infringe upon the rights of others</li>
           <li>Upload, post, or transmit harmful, offensive, or inappropriate content</li>
-          <li>Attempt to gain unauthorized access to our systems or other users' accounts</li>
-          <li>Interfere with or disrupt the platform's functionality</li>
+          <li>Attempt to gain unauthorized access to our systems or other users&apos; accounts</li>
+          <li>Interfere with or disrupt the platform&apos;s functionality</li>
           <li>Use automated systems to access the platform without our permission</li>
           <li>Share your account credentials with others</li>
-          <li>Attempt to reverse engineer or copy our platform's code or content</li>
+          <li>Attempt to reverse engineer or copy our platform&apos;s code or content</li>
         </ul>
 
         <h2 className="text-2xl font-semibold text-gray-900 mt-8">5. Intellectual Property Rights</h2>
