@@ -1,4 +1,4 @@
--- Create live_course_reg table for DFT Hands-On DFT Analysis Crash Course enrollments
+-- Create live_course_reg table for enrollments
 CREATE TABLE live_course_reg (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   course UUID NOT NULL REFERENCES courses(id),
@@ -23,4 +23,14 @@ CREATE TABLE live_course_reg (
 ALTER TABLE live_course_reg ENABLE ROW LEVEL SECURITY;
 
 -- Create index for course
-CREATE INDEX idx_live_course_reg_course ON live_course_reg(course); 
+CREATE INDEX idx_live_course_reg_course ON live_course_reg(course);
+
+-- Allow anyone to select (read)
+CREATE POLICY "Allow all read" ON live_course_reg
+  FOR SELECT
+  USING (true);
+
+-- Allow anyone to insert (write)
+CREATE POLICY "Allow all insert" ON live_course_reg
+  FOR INSERT
+  WITH CHECK (true); 
