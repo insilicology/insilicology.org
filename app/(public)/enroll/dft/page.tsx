@@ -297,7 +297,7 @@ export default function DFTEnrollPage() {
             <div className="mt-2 text-red-600 text-xs">File type not accepted or file is too large.</div>
           )}
         </div>
-        <button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg shadow transition">Submit</button>
+        <button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg shadow transition cursor-pointer">Submit</button>
       </form>
     </div>
   );
