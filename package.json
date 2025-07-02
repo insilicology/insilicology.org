@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@portabletext/react": "^3.2.1",
+    "@sanity/vision": "^3.95.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "class-variance-authority": "^0.7.1",
     "country-list-js": "^3.1.8",
