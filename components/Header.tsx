@@ -10,7 +10,7 @@ import AuthButton from './AuthButton';
 
 const navLinks = [
   { label: "Home", route: "/" },
-  { label: "Courses", route: "/courses" },
+  { label: "DFT Course", route: "/enroll/dft" },
   { label: "Blog", route: "/blog" },
   { label: "Contact", route: "/contact" },
 ];

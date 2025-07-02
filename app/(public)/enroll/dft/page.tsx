@@ -131,7 +131,7 @@ export default function DFTEnrollPage() {
     setLoading(true);
 
     // Validate required fields
-    if (!form.full_name || !form.email || !form.country || !form.experience || !form.comments || !form.payment_method || !form.payment_screenshot || !form.agreement) {
+    if (!form.full_name || !form.email || !form.country || !form.status || !form.experience || !form.comments || !form.payment_method || !form.payment_screenshot || !form.agreement) {
       setError("Please fill all required fields and agree to the terms.");
       setLoading(false);
       return;
@@ -301,8 +301,8 @@ export default function DFTEnrollPage() {
               </div>
               {/* Academic/Professional Status dropdown */}
               <div>
-                <label className="block font-medium mb-1">Academic/Professional Status</label>
-                <select name="status" value={form.status} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label className="block font-medium mb-1">Academic/Professional Status <RedStar /></label>
+                <select name="status" value={form.status} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                   <option value="">Select...</option>
                   {STATUS_OPTIONS.map((s) => (
                     <option key={s.value} value={s.value}>{s.label}</option>

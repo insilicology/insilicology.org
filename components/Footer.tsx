@@ -76,8 +76,8 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/services" passHref>
-                <span className="text-gray-400 hover:text-white transition-colors">Services</span>
+              <Link href="/enroll/dft" passHref>
+                <span className="text-gray-400 hover:text-white transition-colors">DFT Course</span>
               </Link>
             </li>
             <li>
