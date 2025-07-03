@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import supabase from "@/lib/supabase";
-import { UploadCloud, X } from "lucide-react";
+import { UploadCloud, X, Download } from "lucide-react";
 
 // Add type for form state
 type FormState = {
@@ -211,13 +211,28 @@ export default function DFTEnrollPage() {
   // Helper for red star
   const RedStar = () => <span className="text-red-500 ml-0.5">*</span>;
 
+  // Function to download course details
+  const downloadCourseDetails = () => {
+    // Open the PDF in a new tab
+    window.open('/course-syllabus/dft-syllabus-insilicology.pdf', '_blank');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-2">
       <div className="w-full max-w-2xl">
         {/* Course Description Card */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex items-center mb-2 text-lg font-semibold">
-            <span className="mr-2" role="img" aria-label="calendar">📅</span>3-Day Intensive Online Workshop
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center text-lg font-semibold">
+              <span className="mr-2" role="img" aria-label="calendar">📅</span>3-Day Intensive Online Workshop
+            </div>
+            <button
+              onClick={downloadCourseDetails}
+              className="flex items-center gap-2 px-4 py-2 bg-amber-400 text-white font-semibold rounded-lg hover:bg-amber-500 transition-colors duration-200"
+            >
+              <Download size={16} />
+              Download Details
+            </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-2">
             <div>
@@ -264,11 +279,11 @@ export default function DFTEnrollPage() {
             )}
             <div>
               <label className="block font-medium mb-1">Full Name <RedStar /></label>
-              <input type="text" name="full_name" value={form.full_name} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+              <input type="text" name="full_name" value={form.full_name} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
             </div>
             <div>
               <label className="block font-medium mb-1">Email <RedStar /></label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+              <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -277,7 +292,7 @@ export default function DFTEnrollPage() {
               </div>
               <div>
                 <label className="block font-medium mb-1">Country <RedStar /></label>
-                <input type="text" name="country" value={form.country} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="country" value={form.country} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -302,14 +317,14 @@ export default function DFTEnrollPage() {
               {/* Academic/Professional Status dropdown */}
               <div>
                 <label className="block font-medium mb-1">Academic/Professional Status <RedStar /></label>
-                <select name="status" value={form.status} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <select name="status" value={form.status} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400">
                   <option value="">Select...</option>
                   {STATUS_OPTIONS.map((s) => (
                     <option key={s.value} value={s.value}>{s.label}</option>
                   ))}
                 </select>
                 {form.status === "Other" && (
-                  <input type="text" name="status" value={form.status} onChange={handleChange} placeholder="Please specify" className="mt-2 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                  <input type="text" name="status" value={form.status} onChange={handleChange} placeholder="Please specify" className="mt-2 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
                 )}
               </div>
             </div>
@@ -318,11 +333,11 @@ export default function DFTEnrollPage() {
               <label className="block font-medium mb-1">Have you used DFT or quantum software before? <RedStar /></label>
               <div className="flex space-x-6 mt-1">
                 <label className="inline-flex items-center">
-                  <input type="radio" name="experience" value="Yes" checked={form.experience === "Yes"} onChange={handleChange} required className="accent-blue-600" />
+                  <input type="radio" name="experience" value="Yes" checked={form.experience === "Yes"} onChange={handleChange} required className="accent-amber-600" />
                   <span className="ml-2">Yes</span>
                 </label>
                 <label className="inline-flex items-center">
-                  <input type="radio" name="experience" value="No" checked={form.experience === "No"} onChange={handleChange} required className="accent-blue-600" />
+                  <input type="radio" name="experience" value="No" checked={form.experience === "No"} onChange={handleChange} required className="accent-amber-600" />
                   <span className="ml-2">No</span>
                 </label>
               </div>
@@ -330,23 +345,23 @@ export default function DFTEnrollPage() {
             {/* Comments field with new label */}
             <div>
               <label className="block font-medium mb-1">What do you hope to gain from this course? <RedStar /></label>
-              <textarea name="comments" value={form.comments} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" rows={2} />
+              <textarea name="comments" value={form.comments} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" rows={2} />
             </div>
             <div>
               <label className="block font-medium mb-1">Preferred Payment Method <RedStar /></label>
-              <select name="payment_method" value={form.payment_method} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+              <select name="payment_method" value={form.payment_method} onChange={handleChange} required className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 <option value="">Select...</option>
                 {PAYMENT_METHODS.map((m) => (
                   <option key={m.value} value={m.value}>{m.label}</option>
                 ))}
               </select>
               {form.payment_method === "Other" && (
-                <input type="text" name="paymentMethodOther" value={form.paymentMethodOther} onChange={handleChange} placeholder="Please specify" className="mt-2 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="paymentMethodOther" value={form.paymentMethodOther} onChange={handleChange} placeholder="Please specify" className="mt-2 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
               )}
             </div>
             {/* Payment Details Section - moved here */}
             <div className="mb-2 text-center">
-              <div className="text-lg font-semibold">Course Fee - <span className="text-blue-600">$50</span></div>
+              <div className="text-lg font-semibold">Course Fee - <span className="text-amber-600">$50</span></div>
               <div className="mt-2 text-sm text-gray-700">
                 <div>UPI ID: <span className="font-mono">9123799685@axisb</span></div>
                 <div>Paypal (int.): <span className="font-mono">hsifat14@gmail.com</span></div>
@@ -357,7 +372,7 @@ export default function DFTEnrollPage() {
             <div>
               <label className="block font-medium mb-1">Payment Screenshot <RedStar /></label>
               <div
-                className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 cursor-pointer transition ${form.payment_screenshot ? 'border-green-400 bg-green-50' : 'border-gray-300 bg-gray-50'} hover:border-blue-400`}
+                className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 cursor-pointer transition ${form.payment_screenshot ? 'border-green-400 bg-green-50' : 'border-gray-300 bg-gray-50'} hover:border-amber-400`}
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => fileInputRef.current?.click()}
@@ -369,8 +384,8 @@ export default function DFTEnrollPage() {
                   </div>
                 ) : (
                   <>
-                    <UploadCloud className="text-3xl text-blue-400 mb-2" />
-                    <span className="text-gray-700">Drag & drop or <span className="text-blue-600 underline">browse</span> to upload</span>
+                    <UploadCloud className="text-3xl text-amber-400 mb-2" />
+                    <span className="text-gray-700">Drag & drop or <span className="text-amber-600 underline">browse</span> to upload</span>
                     <span className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, PPT, PPTX, JPG, PNG, WEBP. Max 10MB.</span>
                   </>
                 )}
@@ -391,7 +406,7 @@ export default function DFTEnrollPage() {
                 checked={form.agreement}
                 onChange={handleChange}
                 required
-                className="mr-2 accent-blue-600"
+                className="mr-2 accent-amber-600"
               />
               <label className="text-sm font-medium">
                 I understand this is a paid course and agree to receive payment details. <RedStar />
@@ -400,7 +415,7 @@ export default function DFTEnrollPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 px-4 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-50 text-lg"
+              className="w-full py-2 px-4 rounded bg-amber-400 text-white font-semibold hover:bg-amber-500 transition disabled:opacity-50 text-lg"
             >
               {loading ? "Submitting..." : "Submit Registration"}
             </button>
