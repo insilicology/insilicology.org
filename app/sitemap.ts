@@ -49,12 +49,6 @@ export default async function sitemap(): Promise<SitemapEntry[]> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/courses/live/wordpress`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/courses/recorded`,
       lastModified: new Date().toISOString(),
       changeFrequency: "daily",
