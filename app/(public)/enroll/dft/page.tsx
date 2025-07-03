@@ -214,7 +214,7 @@ export default function DFTEnrollPage() {
   // Function to download course details
   const downloadCourseDetails = () => {
     // Open the PDF in a new tab
-    window.open('/course-syllabus/dft-syllabus-insilicology.pdf', '_blank');
+    window.open('/syllabus/dft.pdf', '_blank');
   };
 
   return (
