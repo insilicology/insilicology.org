@@ -16,7 +16,7 @@ import {
 const adminMenu = [
   { name: 'Admin Panel', href: '/admin', icon: <ShieldEllipsis size={18} /> },
   {
-    name: 'Course Management',
+    name: 'Courses',
     icon: <BookOpen size={18} />,
     subItems: [
       { name: 'All Courses', href: '/admin/courses' },
@@ -25,7 +25,7 @@ const adminMenu = [
     ],
   },
   {
-    name: 'Resource Management',
+    name: 'Resources',
     icon: <FileVideo size={18} />,
     subItems: [
       { name: 'All Resources', href: '/admin/resources' },
@@ -33,7 +33,7 @@ const adminMenu = [
     ],
   },
   {
-    name: 'Video Management',
+    name: 'Recordings',
     icon: <FileVideo size={18} />,
     subItems: [
       { name: 'All Videos', href: '/admin/recordings' },
@@ -48,7 +48,7 @@ const adminMenu = [
     ],
   },
   {
-    name: 'User Management',
+    name: 'Users',
     icon: <Users size={18} />,
     subItems: [
       { name: 'All Users', href: '/admin/users' },
