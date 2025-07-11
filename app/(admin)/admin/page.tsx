@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Users,
   LayoutDashboard,
+  FileText,
 } from 'lucide-react';
 
 const adminMenu = [
@@ -30,6 +31,12 @@ const adminMenu = [
     href: '/admin/resources',
     icon: <FileVideo size={28} className="text-orange-600" />,
     short: 'রিসোর্স আপলোড ও ম্যানেজ',
+  },
+  {
+    name: 'DFT Submissions',
+    href: '/admin/dft-submissions',
+    icon: <FileText size={28} className="text-orange-600" />,
+    short: 'DFT কোর্স রেজিস্ট্রেশন',
   },
   {
     name: 'পরীক্ষা',
@@ -54,28 +61,61 @@ const adminMenu = [
 export default function AdminDashboardPage() {
   const supabase = createClientComponentClient();
   const [adminName, setAdminName] = useState<string | null>(null);
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalCourses: 0,
+    totalDFTSubmissions: 0,
+    recentSubmissions: 0
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchAdmin() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    async function fetchData() {
+      try {
+        setLoading(true);
+        
+        // Fetch admin info
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      if (!user) return;
+        if (user) {
+          const { data, error } = await supabase
+            .from('users')
+            .select('name, email')
+            .eq('id', user.id)
+            .single();
 
-      const { data, error } = await supabase
-        .from('users')
-        .select('name, email')
-        .eq('id', user.id)
-        .single();
+          if (!error) {
+            const display = data.name?.trim() || data.email?.split('@')[0] || 'অ্যাডমিন';
+            setAdminName(display);
+          }
+        }
 
-      if (!error) {
-        const display = data.name?.trim() || data.email?.split('@')[0] || 'অ্যাডমিন';
-        setAdminName(display);
+        // Fetch statistics
+        const [usersCount, coursesCount, dftCount, recentDFT] = await Promise.all([
+          supabase.from('users').select('id', { count: 'exact', head: true }),
+          supabase.from('courses').select('id', { count: 'exact', head: true }),
+          supabase.from('dft_reg').select('id', { count: 'exact', head: true }),
+          supabase.from('dft_reg')
+            .select('id', { count: 'exact', head: true })
+            .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        ]);
+
+        setStats({
+          totalUsers: usersCount.count || 0,
+          totalCourses: coursesCount.count || 0,
+          totalDFTSubmissions: dftCount.count || 0,
+          recentSubmissions: recentDFT.count || 0
+        });
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
       }
     }
 
-    fetchAdmin();
+    fetchData();
   }, [supabase]);
 
   return (
@@ -83,6 +123,59 @@ export default function AdminDashboardPage() {
       <h1 className="text-2xl md:text-3xl font-bold mb-4">
         স্বাগতম{adminName ? `, ${adminName}` : ''}! 🛠️
       </h1>
+
+      {/* Statistics Cards */}
+      {!loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Users</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+              </div>
+              <div className="bg-blue-100 rounded-full p-2">
+                <Users size={20} className="text-blue-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Courses</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalCourses}</p>
+              </div>
+              <div className="bg-green-100 rounded-full p-2">
+                <BookOpen size={20} className="text-green-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">DFT Submissions</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalDFTSubmissions}</p>
+              </div>
+              <div className="bg-orange-100 rounded-full p-2">
+                <FileText size={20} className="text-orange-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Recent (7 days)</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.recentSubmissions}</p>
+              </div>
+              <div className="bg-purple-100 rounded-full p-2">
+                <FileText size={20} className="text-purple-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {adminMenu.map((item, idx) => (

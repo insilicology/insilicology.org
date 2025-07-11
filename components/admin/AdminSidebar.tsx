@@ -14,48 +14,48 @@ import {
 } from 'lucide-react';
 
 const adminMenu = [
-  { name: 'অ্যাডমিন প্যানেল', href: '/admin', icon: <ShieldEllipsis size={18} /> },
+  { name: 'Admin Panel', href: '/admin', icon: <ShieldEllipsis size={18} /> },
   {
-    name: 'কোর্স ম্যানেজমেন্ট',
+    name: 'Course Management',
     icon: <BookOpen size={18} />,
     subItems: [
-      { name: 'সকল কোর্স', href: '/admin/courses' },
-      { name: 'কোর্স যোগ করুন', href: '/admin/courses/new' },
+      { name: 'All Courses', href: '/admin/courses' },
+      { name: 'Add Course', href: '/admin/courses/new' },
+      { name: 'Submissions', href: '/admin/dft-submissions' },
     ],
   },
   {
-    name: 'রিসোর্স ম্যানেজমেন্ট',
+    name: 'Resource Management',
     icon: <FileVideo size={18} />,
     subItems: [
-      { name: 'সকল রিসোর্স', href: '/admin/resources' },
-      { name: 'রিসোর্স যোগ করুন', href: '/admin/resources/new' },
+      { name: 'All Resources', href: '/admin/resources' },
+      { name: 'Add Resource', href: '/admin/resources/new' },
     ],
   },
   {
-    name: 'ভিডিও ম্যানেজমেন্ট',
+    name: 'Video Management',
     icon: <FileVideo size={18} />,
     subItems: [
-      { name: 'সকল ভিডিও', href: '/admin/recordings' },
-      { name: 'ভিডিও যোগ করুন', href: '/admin/recordings/new' },
+      { name: 'All Videos', href: '/admin/recordings' },
+      { name: 'Add Video', href: '/admin/recordings/new' },
     ],
   },
   {
-    name: 'পরীক্ষা',
+    name: 'DFT Submissions',
     icon: <ClipboardList size={18} />,
     subItems: [
-      { name: 'সকল পরীক্ষা', href: '/admin/exams' },
-      { name: 'পরীক্ষা যোগ করুন', href: '/admin/exams/new' },
+      { name: 'All Submissions', href: '/admin/dft-submissions' },
     ],
   },
   {
-    name: 'ইউজার ম্যানেজমেন্ট',
+    name: 'User Management',
     icon: <Users size={18} />,
     subItems: [
-      { name: 'সকল ইউজার', href: '/admin/users' },
-      { name: 'এডমিন রোল দিন', href: '/admin/users/roles' },
+      { name: 'All Users', href: '/admin/users' },
+      { name: 'Add User', href: '/admin/users/roles' },
     ],
   },
-  { name: 'স্টুডেন্ট ড্যাশবোর্ড', href: '/dashboard', icon: <LayoutDashboard size={18} /> },
+  { name: 'Student Dashboard', href: '/dashboard', icon: <LayoutDashboard size={18} /> },
 ];
 
 interface AdminSidebarProps {
