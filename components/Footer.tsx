@@ -104,7 +104,7 @@ const Footer = () => {
           <ul className='space-y-3'>
             <li className="flex items-start space-x-3 text-gray-400">
               <MapPin size={16} className='mt-1 flex-shrink-0' />
-              <span>Savar, Dhaka 1340, Bangladesh</span>
+              <span>Shahinbagh, Tejgaon, Dhaka 1215, Bangladesh</span>
             </li>
             <li className="flex items-start space-x-3 text-gray-400">
               <Mail size={16} className='mt-1 flex-shrink-0' />
@@ -112,7 +112,7 @@ const Footer = () => {
             </li>
             <li className="flex items-start space-x-3 text-gray-400">
               <Phone size={16} className='mt-1 flex-shrink-0' />
-              <span>+880 1617 082936</span>
+              <span>+880 1708 507075</span>
             </li>
           </ul>
         </div>

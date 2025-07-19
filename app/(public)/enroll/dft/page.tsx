@@ -224,7 +224,7 @@ export default function DFTEnrollPage() {
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center text-lg font-semibold">
-              <span className="mr-2" role="img" aria-label="calendar">📅</span>3-Day Intensive Online Workshop
+              DFT Analysis Crash Course — 2nd Batch —(Live + Recorded)
             </div>
             <button
               onClick={downloadCourseDetails}
@@ -234,20 +234,22 @@ export default function DFTEnrollPage() {
               Download Details
             </button>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-2">
             <div>
-              <div><span className="font-semibold">Duration:</span> 3 Days</div>
-              <div><span className="font-semibold">Start Dates (Choose One):</span> 12th / 15th / 20th July 2025</div>
-              <div><span className="font-semibold">Time:</span> 11:00 PM (GMT+6)</div>
+              <div><span className="font-semibold">Duration:</span> 4 Days</div>
+              <div><span className="font-semibold">Dates (Choose One):</span> 5th, 8th, 12th & 15th August 2025</div>
+              <div><span className="font-semibold">Time:</span> 5:00 PM (UTC+0)</div>
               <div><span className="font-semibold">Platform:</span> Zoom / Google Meet</div>
             </div>
             <div>
               <div><span className="font-semibold">Language:</span> English</div>
               <div><span className="font-semibold">Certificate:</span> Provided (Digital PDF)</div>
-              <div><span className="font-semibold">Seats Available:</span> Only 15 per batch</div>
-              <div><span className="font-semibold">Mode:</span> Live + Recorded Access</div>
+              <div><span className="font-semibold">Seats Available:</span> Limited to 20 Only</div>
+              <div><span className="font-semibold">Mode:</span> Live + Full Recording Access</div>
             </div>
           </div>
+
           <div className="mt-2">
             <div className="font-semibold mb-1">Course Roadmap: <span className="font-normal">From Basics to Advanced Post-Processing</span></div>
             <ol className="list-decimal list-inside text-gray-700 text-sm space-y-0.5">
@@ -262,6 +264,42 @@ export default function DFTEnrollPage() {
               <li>Post-Processing Tools</li>
               <li>Speed Up Your DFT Calculations</li>
             </ol>
+          </div>
+
+          <div className="mt-4">
+            <div className="font-semibold mb-1 text-gray-800">Why Join This Hands-On Course?</div>
+            <ul className="list-disc list-inside text-sm text-gray-700 space-y-0.5">
+              <li>✅ Beginner-friendly — no prior experience needed</li>
+              <li>✅ Software included for FREE (Gaussian, ORCA, Chimera, Avogadro)</li>
+              <li>✅ Real project practice with tools used in publication-level research</li>
+              <li>✅ Simulate & analyze: HOMO-LUMO, IR, Raman, MEP, Reactivity Descriptors</li>
+              <li>✅ Learn to write DFT results for journals with confidence</li>
+              <li>✅ Get instructor support during live classes</li>
+            </ul>
+          </div>
+
+          <div className="mt-4">
+            <div className="font-semibold mb-1 text-gray-800">Bonus Perks</div>
+            <ul className="list-disc list-inside text-sm text-gray-700 space-y-0.5">
+              <li>✔️ Lifetime recording access</li>
+              <li>✔️ Digital certificate</li>
+              <li>✔️ Direct support via Email / WhatsApp</li>
+            </ul>
+          </div>
+
+          <div className="mt-4 text-sm text-gray-700">
+            <div className="font-semibold text-gray-800 mb-1">Registration</div>
+            <p>📝 Register now: Scan QR in poster or DM us directly</p>
+            <p>📩 Email: <a href="mailto:insilicology@gmail.com" className="text-blue-600 hover:underline">insilicology@gmail.com</a></p>
+            <p>📲 WhatsApp: <a href="https://wa.me/+8801987718298" target="_blank" className="text-blue-600 hover:underline">+8801987718298</a></p>
+            <p>🔗 Facebook: <a href="https://www.facebook.com/insilicology" target="_blank" className="text-blue-600 hover:underline">facebook.com/insilicology</a></p>
+            <p>🌐 Website: <a href="https://www.insilicology.org" target="_blank" className="text-blue-600 hover:underline">www.insilicology.org</a></p>
+          </div>
+
+          <div className="mt-4 text-xs text-gray-500">
+            🔥 Seats are filling fast — Don’t miss the 2nd Batch!
+            <br />
+            #DFTWorkshop #InSilicology #QuantumChemistry #HOMOLUMO #FTIR #ComputationalChemistry #DrugDiscovery #DFTCourse #ChemTraining #OnlineChemistry #Gaussian #ORCA #ScientificComputing
           </div>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-8">
