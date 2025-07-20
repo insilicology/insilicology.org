@@ -73,7 +73,7 @@ export default function AdminSidebar({ onClose }: AdminSidebarProps) {
     <aside className="w-64 bg-white h-screen shadow p-4">
       {/* Logo */}
       <div className="mb-6 flex px-4 pt-1">
-        <Image src="/logos/logo-skilltori.svg" alt="Logo" width={120} height={40} />
+        <Image src="/logos/icon-insilicology.svg" alt="Logo" width={40} height={40} />
       </div>
 
       {/* Menu Items */}

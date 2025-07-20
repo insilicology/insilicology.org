@@ -57,7 +57,7 @@ export default function DashboardLayoutComponent({ children }: DashboardLayoutPr
           {/* Logo for mobile */}
           <Link href="/dashboard" className="block md:hidden w-[120px] shrink-0 ml-2 mt-1.5 mr-2">
             <Image
-              src="/logos/logo-skilltori.svg"
+              src="/logos/icon-insilicology.svg"
               alt="Logo"
               width={120}
               height={40}

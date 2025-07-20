@@ -20,6 +20,7 @@ type FormState = {
   paymentMethodOther: string;
   payment_screenshot: File | null;
   agreement: boolean;
+  batch: string;
 };
 
 const PAYMENT_METHODS = [
@@ -66,6 +67,7 @@ const initialState: FormState = {
   paymentMethodOther: "",
   payment_screenshot: null,
   agreement: false,
+  batch: "2",
 };
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -193,6 +195,7 @@ export default function DFTEnrollPage() {
         comments: form.comments,
         payment_method: form.payment_method === "Other" ? form.paymentMethodOther : form.payment_method,
         payment_screenshot_url,
+        batch: form.batch,
       },
     ]);
 
@@ -305,6 +308,8 @@ export default function DFTEnrollPage() {
         <div className="bg-white rounded-xl shadow-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
             <h1 className="text-3xl font-bold mb-2 text-center">DFT Course Registration</h1>
+            {/* Hidden batch field - locked to "2" */}
+            <input type="hidden" name="batch" value={form.batch} />
             {success && (
               <div className="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300 text-center">
                 Registration successful! We will contact you soon.

@@ -25,6 +25,7 @@ export default function DFTSubmissionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [countryFilter, setCountryFilter] = useState('');
+  const [batchFilter, setBatchFilter] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<DFTRegistration | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -58,8 +59,9 @@ export default function DFTSubmissionsPage() {
     
     const matchesStatus = !statusFilter || submission.status === statusFilter;
     const matchesCountry = !countryFilter || submission.country === countryFilter;
+    const matchesBatch = !batchFilter || submission.batch === batchFilter;
 
-    return matchesSearch && matchesStatus && matchesCountry;
+    return matchesSearch && matchesStatus && matchesCountry && matchesBatch;
   });
 
   const getStatusColor = (status: string) => {
@@ -91,7 +93,7 @@ export default function DFTSubmissionsPage() {
   const exportToCSV = () => {
     const headers = [
       'ID', 'Full Name', 'Email', 'Phone', 'Country', 'State', 'City',
-      'Status', 'Experience', 'Payment Method', 'Comments', 'Created At'
+      'Status', 'Experience', 'Payment Method', 'Batch', 'Comments', 'Created At'
     ];
     
     const csvData = filteredSubmissions.map(sub => [
@@ -105,6 +107,7 @@ export default function DFTSubmissionsPage() {
       sub.status,
       sub.experience,
       sub.payment_method,
+      sub.batch,
       sub.comments,
       formatDate(sub.created_at)
     ]);
@@ -158,7 +161,7 @@ export default function DFTSubmissionsPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -197,12 +200,25 @@ export default function DFTSubmissionsPage() {
             ))}
           </select>
 
+          {/* Batch Filter */}
+          <select
+            value={batchFilter}
+            onChange={(e) => setBatchFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+          >
+            <option value="">All Batches</option>
+            {Array.from(new Set(submissions.map(s => s.batch))).sort().map(batch => (
+              <option key={batch} value={batch}>Batch {batch}</option>
+            ))}
+          </select>
+
           {/* Clear Filters */}
           <button
             onClick={() => {
               setSearchTerm('');
               setStatusFilter('');
               setCountryFilter('');
+              setBatchFilter('');
             }}
             className="px-4 py-2 text-gray-600 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
@@ -246,6 +262,9 @@ export default function DFTSubmissionsPage() {
                       </th>
                       <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]">
                         Payment
+                      </th>
+                      <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]">
+                        Batch
                       </th>
                       <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[140px]">
                         Date
@@ -334,6 +353,13 @@ export default function DFTSubmissionsPage() {
                         </td>
                         <td className="hidden md:table-cell px-4 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              Batch {submission.batch}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="hidden md:table-cell px-4 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">
                             <div className="flex items-center">
                               <Calendar className="w-3 h-3 mr-1 text-gray-400 flex-shrink-0" />
                               <span className="truncate max-w-[120px]">{formatDate(submission.created_at)}</span>
@@ -398,6 +424,12 @@ export default function DFTSubmissionsPage() {
                       <label className="text-sm font-medium text-gray-500">Status</label>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(selectedSubmission.status)}`}>
                         {selectedSubmission.status}
+                      </span>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Batch</label>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Batch {selectedSubmission.batch}
                       </span>
                     </div>
                   </div>

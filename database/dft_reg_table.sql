@@ -14,6 +14,7 @@ CREATE TABLE dft_reg (
   comments TEXT NOT NULL,
   payment_method TEXT NOT NULL,
   payment_screenshot_url TEXT NOT NULL,
+  batch TEXT DEFAULT '2',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -26,6 +27,7 @@ CREATE INDEX idx_dft_reg_email ON dft_reg(email);
 CREATE INDEX idx_dft_reg_created_at ON dft_reg(created_at);
 CREATE INDEX idx_dft_reg_country ON dft_reg(country);
 CREATE INDEX idx_dft_reg_status ON dft_reg(status);
+CREATE INDEX idx_dft_reg_batch ON dft_reg(batch);
 
 -- Allow anyone to select (read) - for admin access
 CREATE POLICY "Allow all read" ON dft_reg

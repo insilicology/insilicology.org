@@ -13,6 +13,7 @@ export interface DFTRegistration {
   comments: string;
   payment_method: string;
   payment_screenshot_url: string;
+  batch: string;
   created_at: string;
   updated_at: string;
 }
@@ -33,6 +34,7 @@ export interface DFTRegistrationFormData {
   paymentMethodOther: string;
   payment_screenshot: File | null;
   agreement: boolean;
+  batch: string;
 }
 
 export type DFTStatus = 'PhD' | 'MSc' | 'BSc' | 'Researcher' | 'Other';
