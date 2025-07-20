@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { 
   Search, 
-  Filter, 
   Plus, 
   Edit, 
   Trash2, 
@@ -15,8 +14,7 @@ import {
   Calendar,
   Shield,
   User,
-  GraduationCap,
-  MoreHorizontal
+  GraduationCap
 } from 'lucide-react';
 
 interface User {
