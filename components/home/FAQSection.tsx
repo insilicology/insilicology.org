@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Sparkles, Zap, MessageCircle } from 'lucide-react';
 
 const faqs = [
   {
@@ -46,15 +46,31 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <section className="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full opacity-10 animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full opacity-10 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full opacity-10 animate-pulse delay-500"></div>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-4xl relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Frequently Asked
-            <span className="text-amber-500 block">Questions</span>
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-semibold shadow-lg mb-6">
+            <MessageCircle className="w-4 h-4" />
+            FAQ
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              Frequently Asked
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent">
+              Questions
+            </span>
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-700">
             Get answers to common questions about our computational biology services and processes.
           </p>
         </div>
@@ -64,31 +80,41 @@ export default function FAQSection() {
           {faqs.map((faq, index) => (
             <div 
               key={index}
-              className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-amber-300 transition-colors"
+              className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden hover:border-green-300 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 relative"
             >
+              {/* Animated Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-green-50/50 transition-all duration-300 relative"
               >
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                <h3 className="text-lg font-semibold text-gray-900 pr-4 group-hover:text-gray-800 transition-colors">
                   {faq.question}
                 </h3>
                 <div className="flex-shrink-0">
                   {openIndex === index ? (
-                    <ChevronUp className="w-5 h-5 text-amber-600" />
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                      <ChevronUp className="w-5 h-5 text-white" />
+                    </div>
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <div className="w-8 h-8 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full flex items-center justify-center group-hover:from-green-400 group-hover:to-emerald-400 transition-all duration-300">
+                      <ChevronDown className="w-5 h-5 text-white" />
+                    </div>
                   )}
                 </div>
               </button>
               
               {openIndex === index && (
-                <div className="px-6 pb-4">
-                  <div className="border-t border-gray-100 pt-4">
-                    <p className="text-gray-600 leading-relaxed">
+                <div className="px-8 pb-6 relative">
+                  <div className="border-t border-green-200 pt-4">
+                    <p className="text-gray-700 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
+                  {/* Decorative Elements */}
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
+                  <div className="absolute bottom-4 left-4 w-1 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"></div>
                 </div>
               )}
             </div>
@@ -97,30 +123,35 @@ export default function FAQSection() {
 
         {/* CTA Section */}
         <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Still Have Questions?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Our team of computational biology experts is here to help. 
-              Get in touch with us for personalized assistance.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors shadow-lg hover:shadow-xl"
-              >
-                Contact Us
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-              <a 
-                href="/services"
-                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-amber-500 text-amber-600 font-semibold rounded-lg hover:bg-amber-50 transition-colors"
-              >
-                Learn More
-              </a>
+          <div className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 via-emerald-600/20 to-teal-600/20"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-16 translate-x-16"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full translate-y-12 -translate-x-12"></div>
+            
+            <div className="relative">
+              <h3 className="text-3xl font-bold text-white mb-4">
+                Still Have Questions?
+              </h3>
+              <p className="text-white/90 mb-8 text-lg">
+                Our team of computational biology experts is here to help. 
+                Get in touch with us for personalized assistance.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                  href="/contact"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-white text-green-600 font-semibold rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  Contact Us
+                  <Zap className="w-5 h-5" />
+                </a>
+                <a 
+                  href="/services"
+                  className="inline-flex items-center gap-3 px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
+                >
+                  Learn More
+                </a>
+              </div>
             </div>
           </div>
         </div>
