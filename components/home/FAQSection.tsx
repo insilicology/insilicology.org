@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Sparkles, Zap, MessageCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, Zap, MessageCircle } from 'lucide-react';
 
 const faqs = [
   {

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowRight, Sparkles, Zap, BookOpen } from "lucide-react";
+import { ArrowRight, Zap, BookOpen } from "lucide-react";
 
 export const metadata = {
   title: "All Courses",

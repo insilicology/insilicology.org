@@ -425,7 +425,7 @@ export default function DFTEnrollPage() {
             </div>
 
             <div className="text-xs text-gray-500 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-3 border border-orange-200">
-              🔥 Seats are filling fast — Don't miss the 2nd Batch!
+              🔥 Seats are filling fast — Don&apos;t miss the 2nd Batch!
               <br />
               #DFTWorkshop #InSilicology #QuantumChemistry #HOMOLUMO #FTIR #ComputationalChemistry #DrugDiscovery #DFTCourse #ChemTraining #OnlineChemistry #Gaussian #ORCA #ScientificComputing
             </div>

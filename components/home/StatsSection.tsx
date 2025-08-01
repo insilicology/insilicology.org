@@ -1,4 +1,4 @@
-import { TrendingUp, Users, FileText, Clock, Sparkles, Zap } from 'lucide-react';
+import { TrendingUp, Users, FileText, Clock, Sparkles } from 'lucide-react';
 
 const stats = [
   {

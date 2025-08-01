@@ -9,7 +9,6 @@ import {
   FileCode, 
   Search,
   Box,
-  Dna,
   Sparkles,
   Zap,
 } from 'lucide-react';
