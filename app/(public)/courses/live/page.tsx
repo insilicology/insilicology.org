@@ -61,8 +61,8 @@ export default async function AllCoursesPage() {
         </p>
       </div>
 
-      {/* Course Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Course List - Single Column */}
+      <div className="grid grid-cols-1 gap-8">
         {courses.map((course) => (
           <Link
             key={course.slug}
@@ -79,9 +79,7 @@ export default async function AllCoursesPage() {
               />
               {/* Live Badge */}
               <div className="absolute top-3 left-3 flex gap-2">
-                <span className="text-xs px-3 py-1 rounded-full text-white font-medium shadow-sm bg-red-600 border border-red-500">
-                  লাইভ
-                </span>
+                <span className="text-xs px-3 py-1 rounded-full text-white font-medium shadow-sm bg-red-600 border border-red-500">Live</span>
                 {course.duration && (
                   <span className="text-xs bg-gray-800 text-white px-2 py-1 rounded-full font-medium shadow-sm">
                     {course.duration}
@@ -115,7 +113,7 @@ export default async function AllCoursesPage() {
                 </div>
                 <div className="flex items-center text-xs text-gray-500">
                   <Users className="w-3 h-3 mr-2" />
-                  <span>All</span>
+                  <span>All Levels</span>
                 </div>
               </div>
 

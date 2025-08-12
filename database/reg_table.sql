@@ -4,6 +4,8 @@ CREATE TABLE live_course_reg (
   course UUID NOT NULL REFERENCES courses(id),
   full_name TEXT NOT NULL,
   email TEXT NOT NULL,
+  discipline TEXT,
+  university TEXT,
   phone TEXT,
   messenger TEXT,
   telegram TEXT,

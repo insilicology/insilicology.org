@@ -7,22 +7,22 @@ import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// export const metadata = {
-//   title: "Admin",
-//   description:
-//     "Skilltori admin page. All admin pages are listed here.",
-//   keywords: [
-//     "admin",
-//     "skilltori",
-//     "skilltori admin",
-//     "skilltori admin page",
-//     "skilltori admin page",
-//   ],
-//   metadataBase: new URL("https://skilltori.com"),
-//   alternates: {
-//     canonical: `/admin`,
-//   },
-// };
+export const metadata = {
+  title: "Admin Dashboard",
+  description:
+    "Insilicology admin page. All admin pages are listed here.",
+  keywords: [
+    "admin",
+    "insilicology",
+    "insilicology admin",
+    "insilicology admin page",
+    "insilicology admin page",
+  ],
+  metadataBase: new URL("https://insilicology.org"),
+  alternates: {
+    canonical: `/admin`,
+  },
+};
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -60,7 +60,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {/* Logo for mobile */}
           <Link href="/admin" className="block md:hidden w-[120px] shrink-0 ml-2 mt-1.5 mr-2">
             <Image
-              src="/logos/logo-skilltori.svg"
+              src="/logos/logo-insilicology.svg"
               alt="Logo"
               width={120}
               height={40}

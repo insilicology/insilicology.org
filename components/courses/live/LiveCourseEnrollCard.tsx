@@ -25,11 +25,11 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
         )}
         {hasDiscount && (
           <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-semibold">
-            {discountPercentage}% ছাড়
+            {discountPercentage}% OFF
           </div>
         )}
         <div className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-md text-sm font-semibold">
-          লাইভ
+          Live
         </div>
       </div>
 
@@ -40,25 +40,25 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
           {hasDiscount ? (
             <div className="flex items-center space-x-3">
               <span className="text-3xl font-bold text-gray-900">
-                ৳{course.price_offer?.toLocaleString('bn-BD')}
+                ৳{course.price_offer?.toLocaleString('en-US')}
               </span>
               <span className="text-lg text-gray-500 line-through">
-                ৳{course.price_regular?.toLocaleString('bn-BD')}
+                ৳{course.price_regular?.toLocaleString('en-US')}
               </span>
             </div>
           ) : (
             <div className="text-3xl font-bold text-gray-900">
-              ৳{course.price_regular?.toLocaleString('bn-BD') || 'ফ্রি'}
+              ৳{course.price_regular?.toLocaleString('en-US') || 'Free'}
             </div>
           )}
         </div>
 
         {/* Enroll Button */}
         <Link
-          href={`/courses/${course.slug}/enroll`}
+          href={`#enroll`}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 mb-6"
         >
-          <span>এখনই ভর্তি হোন</span>
+          <span>Enroll Now</span>
         </Link>
 
         {/* Course Features */}
@@ -72,24 +72,24 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
           
           <div className="flex items-center space-x-3">
             <Video className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-600">লাইভ কোর্স</span>
+            <span className="text-sm text-gray-600">Live Course</span>
           </div>
           
           <div className="flex items-center space-x-3">
             <Users className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-600">সবাই</span>
+            <span className="text-sm text-gray-600">Everyone</span>
           </div>
           
           <div className="flex items-center space-x-3">
             <Award className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-600">সার্টিফিকেট সহ</span>
+            <span className="text-sm text-gray-600">With Certificate</span>
           </div>
 
           {course.starts_on && (
             <div className="flex items-center space-x-3">
               <Calendar className="w-4 h-4 text-gray-500" />
               <span className="text-sm text-gray-600">
-                শুরু: {new Date(course.starts_on).toLocaleDateString('bn-BD', {
+                Start: {new Date(course.starts_on).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric'
                 })}
@@ -101,7 +101,7 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
         {/* What's Included Preview */}
         {course.included && course.included.length > 0 && (
           <div className="mb-6">
-            <h4 className="font-semibold text-gray-900 mb-3">কোর্সে যা পাবেন:</h4>
+            <h4 className="font-semibold text-gray-900 mb-3">Course includes:</h4>
             <div className="space-y-2">
               {course.included.slice(0, 3).map((item, index) => (
                 <div key={index} className="flex items-start space-x-2">
@@ -111,7 +111,7 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
               ))}
               {course.included.length > 3 && (
                 <p className="text-sm text-gray-500">
-                  এবং আরও {course.included.length - 3} টি বিষয়
+                  and {course.included.length - 3} more
                 </p>
               )}
             </div>
@@ -120,13 +120,13 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
 
         {/* Trust Indicators */}
         <div className="mt-6 pt-6 border-t border-gray-200">
-          <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+            <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
             <div className="flex items-center space-x-1">
               <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              <span>৪.৮/৫</span>
+                <span>4.8/5</span>
             </div>
             <div>•</div>
-            <div>৮+ শিক্ষার্থী</div>
+              <div>8+ students</div>
           </div>
         </div>
       </div>

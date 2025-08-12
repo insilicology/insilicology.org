@@ -5,6 +5,7 @@ import { Clock, Users, Award, CheckCircle, BookOpen, Target, FileText, Calendar,
 import LiveCourseEnrollCard from "@/components/courses/live/LiveCourseEnrollCard";
 import LiveCourseModules from "@/components/courses/live/LiveCourseModules";
 import Image from "next/image";
+import LiveCourseEnrollForm from "@/components/courses/live/LiveCourseEnrollForm";
 
 async function getCourse(slug: string) {
   const supabase = createServerComponentClient({ cookies });
@@ -12,7 +13,7 @@ async function getCourse(slug: string) {
     .from("courses")
     .select("*")
     .eq("slug", slug)
-    .eq("type", "recorded")
+    .eq("type", "live")
     .single();
   
   return course;
@@ -24,8 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   if (!course) {
     return {
-      title: "কোর্স পাওয়া যায়নি",
-      description: "আপনি যে কোর্সটি খুঁজছেন তা পাওয়া যায়নি। পরে আবার চেষ্টা করুন।",
+      title: "Course not found",
+      description: "The course you are looking for was not found. Please try again later.",
     };
   }
 
@@ -33,11 +34,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: course.title,
     description: course.description,
     keywords: [
-      "রেকর্ডেড কোর্স",
-      "কোর্স পাওয়া যায়নি",
-      "পরে আবার চেষ্টা করুন",
+      "Live Course",
+      "Course not found",
+      "Try again later",
     ],
-    metadataBase: new URL('https://skilltori.com'),
+    metadataBase: new URL('https://insilicology.org'),
     alternates: {
       canonical: `/courses/live/${slug}`,
     },
@@ -107,10 +108,8 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
       }}
     >
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Course Details */}
-          <div className="lg:col-span-2 space-y-8">
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="space-y-8">
 
             {/* Title Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -126,13 +125,13 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
 
             {/* Course Overview */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">কোর্সের বিবরণ</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Overview</h2>
               
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <Clock className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">সময়কাল</p>
+                    <p className="text-sm text-gray-600">Duration</p>
                     <p className="font-semibold text-gray-900">{course.duration}</p>
                   </div>
                 </div>
@@ -140,40 +139,40 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <Video className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">কোর্সের ধরন</p>
-                    <p className="font-semibold text-gray-900">লাইভ কোর্স</p>
+                    <p className="text-sm text-gray-600">Course Type</p>
+                    <p className="font-semibold text-gray-900">Live Course</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <Award className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">সার্টিফিকেট</p>
-                    <p className="font-semibold text-gray-900">হ্যাঁ, কোর্স শেষে</p>
+                    <p className="text-sm text-gray-600">Certificate</p>
+                    <p className="font-semibold text-gray-900">Yes, after the course</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <Users className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">কাদের জন্য</p>
-                    <p className="font-semibold text-gray-900">সবাই</p>
+                    <p className="text-sm text-gray-600">Best for</p>
+                    <p className="font-semibold text-gray-900">Everyone</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <Target className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">কঠিনতার মাত্রা</p>
-                    <p className="font-semibold text-gray-900">{course.difficulty || 'মাঝারি'}</p>
+                    <p className="text-sm text-gray-600">Difficulty</p>
+                    <p className="font-semibold text-gray-900">{course.difficulty || 'Medium'}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
                   <BookOpen className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">লাইভ সেশন</p>
-                    <p className="font-semibold text-gray-900">{liveSessionsCount} টি</p>
+                    <p className="text-sm text-gray-600">Live Sessions</p>
+                    <p className="font-semibold text-gray-900">{liveSessionsCount}</p>
                   </div>
                 </div>
               </div>
@@ -182,13 +181,13 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* Course Start Date */}
             {course.starts_on && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">কোর্স শুরু</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Start</h2>
                 <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
                   <Calendar className="w-12 h-12 text-purple-600 bg-purple-100 rounded-md p-2" />
                   <div>
-                    <p className="text-sm text-gray-600">কোর্স শুরুর তারিখ</p>
+                    <p className="text-sm text-gray-600">Start Date</p>
                     <p className="text-xl font-bold text-gray-900">
-                      {new Date(course.starts_on).toLocaleDateString('bn-BD', {
+                      {new Date(course.starts_on).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
@@ -202,7 +201,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* What You'll Learn */}
             {course.included && course.included.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">আপনি যা শিখবেন</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">What you'll learn</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {course.included.map((item: string, index: number) => (
                     <div key={index} className="flex items-start space-x-3">
@@ -217,7 +216,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* Requirements */}
             {course.requirements && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">প্রয়োজনীয়তা</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Requirements</h2>
                 <div className="prose prose-gray max-w-none">
                   <p className="text-gray-700 leading-relaxed">{course.requirements}</p>
                 </div>
@@ -227,7 +226,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* Course Modules */}
             {sortedModules.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">কোর্সের মডিউলসমূহ</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Course modules</h2>
                 <LiveCourseModules modules={sortedModules} />
               </div>
             )}
@@ -235,7 +234,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* Topics */}
             {course.topics && course.topics.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">কোর্সের বিষয়বস্তু</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Course topics</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {course.topics.map((topic: string, index: number) => (
                     <div key={index} className="flex items-start space-x-3">
@@ -250,7 +249,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* Certificate */}
             {course.certificate && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">সার্টিফিকেট</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Certificate</h2>
                 <div className="flex justify-center rounded-sm border-2 border-gray-300 overflow-hidden">
                   <Image src="/certificates/wordpress-cert.png" alt="Certificate" width={600} height={300} className="rounded-sm" />
                 </div>
@@ -260,7 +259,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* FAQs */}
             {course.faqs && course.faqs.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">সাধারণ প্রশ্ন</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">FAQs</h2>
                 <div className="space-y-4">
                   {course.faqs.map((faq: { question: string; answer: string }, index: number) => (
                     <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0">
@@ -271,14 +270,18 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                 </div>
               </div>
             )}
+          {/* Enroll Card - inline */}
+          <div>
+            <LiveCourseEnrollCard course={course} />
           </div>
 
-          {/* Right Column - Sticky Course Card */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-24">
-              <LiveCourseEnrollCard course={course} />
-            </div>
-          </div>
+          {/* Embedded Enrollment Form */}
+          <LiveCourseEnrollForm
+            courseId={course.id}
+            slug={course.slug}
+            priceRegular={course.price_regular}
+            priceOffer={course.price_offer}
+          />
         </div>
       </div>
     </div>
