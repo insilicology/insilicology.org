@@ -7,22 +7,22 @@ import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Admin Dashboard",
-  description:
-    "Insilicology admin page. All admin pages are listed here.",
-  keywords: [
-    "admin",
-    "insilicology",
-    "insilicology admin",
-    "insilicology admin page",
-    "insilicology admin page",
-  ],
-  metadataBase: new URL("https://insilicology.org"),
-  alternates: {
-    canonical: `/admin`,
-  },
-};
+// export const metadata = {
+//   title: "Admin Dashboard",
+//   description:
+//     "Insilicology admin page. All admin pages are listed here.",
+//   keywords: [
+//     "admin",
+//     "insilicology",
+//     "insilicology admin",
+//     "insilicology admin page",
+//     "insilicology admin page",
+//   ],
+//   metadataBase: new URL("https://insilicology.org"),
+//   alternates: {
+//     canonical: `/admin`,
+//   },
+// };
 
 interface DashboardLayoutProps {
   children: ReactNode;

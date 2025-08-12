@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Clock, Users, Award, CheckCircle, BookOpen, Target, FileText, Calendar, Video } from "lucide-react";
-import LiveCourseEnrollCard from "@/components/courses/live/LiveCourseEnrollCard";
+import { Clock, Users, Award, CheckCircle, BookOpen, Target, FileText, Calendar, Video, Sparkles, Zap } from "lucide-react";
+import Link from "next/link";
 import LiveCourseModules from "@/components/courses/live/LiveCourseModules";
 import Image from "next/image";
 import LiveCourseEnrollForm from "@/components/courses/live/LiveCourseEnrollForm";
@@ -111,71 +111,211 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="space-y-8">
 
-            {/* Title Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="mb-2">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            {/* Header Section with smaller banner and placeholder */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="relative w-full h-40 md:h-56 bg-gray-100">
+                {course.poster ? (
+                  <Image
+                    src={course.poster}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 768px"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400 text-sm">Banner unavailable</span>
+                  </div>
+                )}
+              </div>
+              <div className="p-6">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                   {course.title}
                 </h1>
-                <p className="text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                <p className="text-gray-600 leading-relaxed">
                   {course.description}
                 </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {course.duration && (
+                    <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border">
+                      <Clock className="w-3 h-3 mr-1.5" /> {course.duration}
+                    </span>
+                  )}
+                  {course.starts_on && (
+                    <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border">
+                      <Calendar className="w-3 h-3 mr-1.5" />
+                      {new Date(course.starts_on).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  )}
+                  {course.language && (
+                    <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border">
+                      <BookOpen className="w-3 h-3 mr-1.5" /> {course.language}
+                    </span>
+                  )}
+                  {course.seats && (
+                    <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border">
+                      <Users className="w-3 h-3 mr-1.5" /> {course.seats}
+                    </span>
+                  )}
+                  <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200">
+                    <Video className="w-3 h-3 mr-1.5" /> Live
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Course Overview */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Overview</h2>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <Clock className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
+            {/* Modern Course Details (like /enroll/dft) */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-6 md:p-8 border border-white/20">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <BookOpen className="w-6 h-6 text-white" />
+                  </div>
                   <div>
-                    <p className="text-sm text-gray-600">Duration</p>
-                    <p className="font-semibold text-gray-900">{course.duration}</p>
+                    <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      {course.title}
+                    </h2>
+                    <p className="text-xs md:text-sm text-gray-600">Live Course</p>
                   </div>
                 </div>
-                
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <Video className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
-                  <div>
-                    <p className="text-sm text-gray-600">Course Type</p>
-                    <p className="font-semibold text-gray-900">Live Course</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <Award className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
-                  <div>
-                    <p className="text-sm text-gray-600">Certificate</p>
-                    <p className="font-semibold text-gray-900">Yes, after the course</p>
-                  </div>
-                </div>
+                <Link
+                  href="#enroll"
+                  className="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <Sparkles size={16} />
+                  Register Now
+                </Link>
+              </div>
 
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <Users className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
-                  <div>
-                    <p className="text-sm text-gray-600">Best for</p>
-                    <p className="font-semibold text-gray-900">Everyone</p>
-                  </div>
+              {/* Details grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700 mb-6">
+                <div className="space-y-3">
+                  {course.duration && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-purple-500" />
+                      <span><span className="font-semibold">Duration:</span> {course.duration}</span>
+                    </div>
+                  )}
+                  {course.dates && (
+                    <div className="flex items-center gap-2">
+                      <Target className="w-4 h-4 text-blue-500" />
+                      <span><span className="font-semibold">Dates:</span> {course.dates}</span>
+                    </div>
+                  )}
+                  {course.time_set && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-green-500" />
+                      <span><span className="font-semibold">Time:</span> {String(course.time_set).slice(0,5)}</span>
+                    </div>
+                  )}
                 </div>
-                
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <Target className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
-                  <div>
-                    <p className="text-sm text-gray-600">Difficulty</p>
-                    <p className="font-semibold text-gray-900">{course.difficulty || 'Medium'}</p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Award className="w-4 h-4 text-orange-500" />
+                    <span><span className="font-semibold">Platform:</span> Zoom / Google Meet</span>
                   </div>
-                </div>
-                
-                <div className="flex items-center space-x-3 p-2 border border-gray-200 rounded-lg">
-                  <BookOpen className="w-10 h-10 text-purple-600 bg-purple-100 rounded-md p-2" />
-                  <div>
-                    <p className="text-sm text-gray-600">Live Sessions</p>
-                    <p className="font-semibold text-gray-900">{liveSessionsCount}</p>
-                  </div>
+                  {course.language && (
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-purple-500" />
+                      <span><span className="font-semibold">Language:</span> {course.language}</span>
+                    </div>
+                  )}
+                  {course.seats && (
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-pink-500" />
+                      <span><span className="font-semibold">Seats:</span> {course.seats}</span>
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Roadmap */}
+              {course.roadmap && course.roadmap.length > 0 && (
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200 mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                      <BookOpen className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">Course Roadmap</h3>
+                      <p className="text-sm text-gray-600">From basics to advanced</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(course.roadmap as string[]).map((item: string, index: number) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-blue-200 hover:bg-white transition-all duration-300 group">
+                        <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          {index + 1}
+                        </div>
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Why Join */}
+              {course.why_join && course.why_join.length > 0 && (
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">Why join this course?</h3>
+                      <p className="text-sm text-gray-600">Discover the benefits</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(course.why_join as string[]).map((item: string, index: number) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-white/70 rounded-xl border border-green-200 hover:bg-white transition-all duration-300 group">
+                        <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mt-0.5">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Register CTA */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200 text-center">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800">Ready to Get Started?</h3>
+                    <p className="text-sm text-gray-600">Secure your seat now</p>
+                  </div>
+                </div>
+                <Link
+                  href="#enroll"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  Register Now
+                </Link>
+              </div>
+
+              {/* Contact snippets */}
+              <div className="mt-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                <div className="font-semibold mb-2 text-gray-800">Registration</div>
+                <div className="text-sm text-gray-700 space-y-1">
+                  <p>📝 Register now: Scan QR in poster or DM us directly</p>
+                  <p>📩 Email: <a href="mailto:insilicology@gmail.com" className="text-purple-600 hover:underline">insilicology@gmail.com</a></p>
+                  <p>📲 WhatsApp: <a href="https://wa.me/+8801987718298" target="_blank" className="text-purple-600 hover:underline">+8801987718298</a></p>
+                  <p>🔗 Facebook: <a href="https://www.facebook.com/insilicology" target="_blank" className="text-purple-600 hover:underline">facebook.com/insilicology</a></p>
+                  <p>🌐 Website: <a href="https://www.insilicology.org" target="_blank" className="text-purple-600 hover:underline">www.insilicology.org</a></p>
+                </div>
+              </div>
+
+              {course.seats && (
+                <div className="mt-3 text-xs text-gray-500 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-3 border border-orange-200">
+                  🔥 Seats are limited — {course.seats}
+                </div>
+              )}
             </div>
 
             {/* Course Start Date */}
@@ -246,6 +386,60 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
               </div>
             )}
 
+            {/* Course Roadmap - modern UI */}
+            {course.roadmap && course.roadmap.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                      <BookOpen className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">Course Roadmap</h3>
+                      <p className="text-sm text-gray-600">Step-by-step learning path</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {course.roadmap.map((item: string, index: number) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-blue-200 hover:bg-white transition-all duration-300 group">
+                        <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          {index + 1}
+                        </div>
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Why Join - modern UI */}
+            {course.why_join && course.why_join.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">Why join this course?</h3>
+                      <p className="text-sm text-gray-600">Key benefits and outcomes</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {course.why_join.map((item: string, index: number) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-white/70 rounded-xl border border-green-200 hover:bg-white transition-all duration-300 group">
+                        <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mt-0.5">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                        <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Certificate */}
             {course.certificate && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -270,11 +464,6 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                 </div>
               </div>
             )}
-          {/* Enroll Card - inline */}
-          <div>
-            <LiveCourseEnrollCard course={course} />
-          </div>
-
           {/* Embedded Enrollment Form */}
           <LiveCourseEnrollForm
             courseId={course.id}

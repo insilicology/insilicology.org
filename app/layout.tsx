@@ -67,6 +67,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Meta Pixel (noscript) must live in the document head to satisfy App Router constraints */}
+        <noscript>
+          <img height="1" width="1" src="https://www.facebook.com/tr?id=1327822238919663&ev=PageView&noscript=1" />
+        </noscript>
+      </head>
       {/* Google Analytics */}
       {/* <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-PCF0FZZ4HS"
@@ -113,23 +119,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           {/* WhatsApp Button */}
           <WhatsAppButton />
+          {/* Umami Analytics */}
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="e7217454-4abd-4503-9c59-941cac2404ec"
+          />
+          {/* Meta Pixel Code */}
+          <Script id="meta-pixel-code" strategy="afterInteractive">
+            {`
+              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '1327822238919663'); fbq('track', 'PageView');
+            `}
+          </Script>
         </Providers>
       </body>
-
-      {/* Umami Analytics */}
-      <Script 
-        defer 
-        src="https://cloud.umami.is/script.js" 
-        data-website-id="e7217454-4abd-4503-9c59-941cac2404ec"
-      />
-      {/* Meta Pixel Code */}
-      <Script id="meta-pixel-code" strategy="afterInteractive">
-        {`
-          !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '1327822238919663'); fbq('track', 'PageView');
-        `}
-      </Script>
-      <noscript> <img height="1" width="1" src="https://www.facebook.com/tr?id=1327822238919663&ev=PageView&noscript=1"/></noscript>
-      {/* End Meta Pixel Code */}
     </html>
   );
 }

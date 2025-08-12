@@ -46,7 +46,7 @@ export default function CoursesListPage() {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">🎓 কোর্স তালিকা</h1>
-        <Link href="/admin/courses/create">
+        <Link href="/admin/courses/new">
           <Button>+ নতুন কোর্স</Button>
         </Link>
       </div>

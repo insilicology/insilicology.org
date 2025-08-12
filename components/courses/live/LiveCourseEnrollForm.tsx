@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import supabase from "@/lib/supabase";
 import * as countryCodes from "country-codes-list";
 import Image from "next/image";
@@ -54,6 +54,8 @@ export default function LiveCourseEnrollForm({ courseId: propCourseId, slug, pri
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [fileError, setFileError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const STATUS_OPTIONS = [
     { label: "PhD", value: "PhD" },
@@ -111,6 +113,57 @@ export default function LiveCourseEnrollForm({ courseId: propCourseId, slug, pri
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // File upload helpers (modern UI like DFT page)
+  const ACCEPTED_TYPES = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+  ];
+  const ACCEPTED_EXT = ".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.webp";
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  const handleFileChange = (file: File | null) => {
+    setFileError("");
+    if (!file) {
+      setForm((prev) => ({ ...prev, payment_screenshot: null }));
+      return;
+    }
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      setFileError("Unsupported file type.");
+      setForm((prev) => ({ ...prev, payment_screenshot: null }));
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError("File size must be less than 10MB.");
+      setForm((prev) => ({ ...prev, payment_screenshot: null }));
+      return;
+    }
+    setForm((prev) => ({ ...prev, payment_screenshot: file }));
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileChange(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    handleFileChange(file);
+  };
+
+  const removeFile = () => {
+    setForm((prev) => ({ ...prev, payment_screenshot: null }));
+    setFileError("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const canSubmit = useMemo(() => {
     return (
       !!courseId &&
@@ -146,6 +199,7 @@ export default function LiveCourseEnrollForm({ courseId: propCourseId, slug, pri
       return;
     }
     setLoading(true);
+    setFileError("");
     let payment_screenshot_url: string | null = null;
     if (form.payment_screenshot) {
       const file = form.payment_screenshot;
@@ -193,27 +247,28 @@ export default function LiveCourseEnrollForm({ courseId: propCourseId, slug, pri
     setSuccess(true);
     setForm(initialState);
     setLoading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
     <div id="enroll" className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Enroll now</h2>
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold shadow">
+          Enroll Now
+        </div>
+        <h2 className="mt-3 text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Secure your seat</h2>
+      </div>
       {error && (
-        <div className="mb-4 p-3 rounded bg-red-100 text-red-700">{error}</div>
+        <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border border-red-200 text-center">
+          {error}
+        </div>
       )}
       {success && (
-        <div className="mb-4 p-3 rounded bg-green-100 text-green-700">Registration submitted successfully.</div>
+        <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-200 text-center">
+          Registration submitted successfully.
+        </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium mb-1">Payment Screenshot</label>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.webp"
-            onChange={(e) => setForm((prev) => ({ ...prev, payment_screenshot: e.target.files?.[0] || null }))}
-            className="w-full"
-          />
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Full Name <span className="text-red-500">*</span></label>
@@ -343,18 +398,49 @@ export default function LiveCourseEnrollForm({ courseId: propCourseId, slug, pri
           </div>
         </div>
 
+        {/* Modern payment screenshot uploader */}
         <div>
-          <label className="block text-sm font-medium mb-1">Payment Screenshot</label>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.webp"
-            onChange={(e) => setForm((prev) => ({ ...prev, payment_screenshot: e.target.files?.[0] || null }))}
-            className="w-full border border-dashed border-gray-300 rounded-lg px-3 py-2"
-          />
-          <p className="text-xs text-gray-500 mt-1">Upload proof of payment; supported: PDF, DOC, PPT, JPG, PNG, WEBP.</p>
+          <label className="block text-sm font-medium mb-2 text-gray-800">Payment Screenshot</label>
+          <div
+            className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all duration-300 ${
+              form.payment_screenshot ? 'border-green-400 bg-green-50' : 'border-gray-300 bg-gray-50 hover:border-purple-400 hover:bg-purple-50'
+            }`}
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {form.payment_screenshot ? (
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+                <span className="text-green-700 font-medium">{form.payment_screenshot.name}</span>
+                <button
+                  type="button"
+                  onClick={removeFile}
+                  className="text-red-500 hover:text-red-700 transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <span className="text-gray-700">Drag & drop or <span className="text-purple-600 underline">browse</span> to upload</span>
+                <span className="text-xs text-gray-500 mt-2 block">PDF, DOC, PPT, JPG, PNG, WEBP. Max 10MB.</span>
+              </div>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={ACCEPTED_EXT}
+              className="hidden"
+              onChange={handleFileInput}
+            />
+          </div>
+          {fileError && <div className="text-xs text-red-500 mt-2">{fileError}</div>}
         </div>
 
-        <button type="submit" disabled={loading || !canSubmit} className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg disabled:opacity-60">
+        <button type="submit" disabled={loading || !canSubmit} className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold disabled:opacity-60">
           {loading ? "Submitting..." : "Submit Registration"}
         </button>
       </form>
