@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/Button";
@@ -67,6 +67,9 @@ export default function EditCoursePage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [form, setForm] = useState<CourseForm | null>(null);
   const [loading, setLoading] = useState(true);
+  const [posterUploading, setPosterUploading] = useState(false);
+  const [posterError, setPosterError] = useState("");
+  const posterInputRef = useRef<HTMLInputElement>(null);
 
   const formFields: FormField[] = [
     { name: "title", label: "Course Title" },
@@ -175,6 +178,62 @@ export default function EditCoursePage() {
     setForm((prev) => prev ? { ...prev, [name]: arr } : null);
   };
 
+  const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+  const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  const validatePosterFile = (file: File) => {
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      return "Only JPG, PNG, or WEBP images are allowed.";
+    }
+    if (file.size > MAX_IMAGE_SIZE) {
+      return "Image must be less than 10MB.";
+    }
+    return "";
+  };
+
+  const uploadPoster = async (file: File) => {
+    setPosterError("");
+    const validationMessage = validatePosterFile(file);
+    if (validationMessage) {
+      setPosterError(validationMessage);
+      return;
+    }
+    setPosterUploading(true);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const safeSlug = (form?.slug || "course").replace(/[^a-zA-Z0-9-_]/g, "-");
+      const filePath = `courses/${safeSlug}/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from("course-posters")
+        .upload(filePath, file, { cacheControl: "3600", upsert: false });
+      if (uploadError) {
+        setPosterError("Failed to upload image: " + uploadError.message);
+        return;
+      }
+      const { data } = supabase.storage.from("course-posters").getPublicUrl(filePath);
+      const publicUrl = data?.publicUrl || "";
+      if (!publicUrl) {
+        setPosterError("Failed to get public URL for uploaded image.");
+        return;
+      }
+      setForm((prev) => (prev ? { ...prev, poster: publicUrl } : prev));
+    } finally {
+      setPosterUploading(false);
+    }
+  };
+
+  const handlePosterDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      void uploadPoster(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handlePosterInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) void uploadPoster(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form) return;
@@ -253,18 +312,56 @@ export default function EditCoursePage() {
 			<Toaster />
       <h1 className="text-3xl font-bold mb-8">Edit Course: {form.title}</h1>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {formFields.map((f) => (
-          <div key={f.name}>
-            <label className="block text-sm font-medium text-gray-700">{f.label}</label>
+        {formFields
+          .filter((f) => f.name !== "poster")
+          .map((f) => (
+            <div key={f.name}>
+              <label className="block text-sm font-medium text-gray-700">{f.label}</label>
+              <input
+                name={f.name}
+                type={f.type || "text"}
+                className="bg-white"
+                value={getInputValue(f, form)}
+                onChange={handleChange}
+              />
+            </div>
+          ))}
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Poster Image</label>
+          <div
+            onDrop={handlePosterDrop}
+            onDragOver={(e) => e.preventDefault()}
+            onClick={() => posterInputRef.current?.click()}
+            className={`mt-2 flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-6 cursor-pointer ${posterUploading ? "opacity-70" : ""}`}
+          >
+            {form.poster ? (
+              <img src={form.poster} alt="Poster" className="max-h-48 object-contain" />
+            ) : (
+              <p className="text-gray-600">Drag & drop an image here, or click to select</p>
+            )}
+            {posterUploading && <p className="text-sm text-gray-500 mt-2">Uploading...</p>}
+            {posterError && <p className="text-sm text-red-600 mt-2">{posterError}</p>}
             <input
-              name={f.name}
-              type={f.type || "text"}
-              className="bg-white"
-              value={getInputValue(f, form)}
-              onChange={handleChange}
+              ref={posterInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handlePosterInput}
             />
           </div>
-        ))}
+          {form.poster && (
+            <div className="mt-2 flex gap-2 items-center">
+              <input
+                className="bg-white w-full"
+                value={form.poster}
+                onChange={(e) => setForm((prev) => (prev ? { ...prev, poster: e.target.value } : prev))}
+                placeholder="Poster URL"
+              />
+              <Button type="button" onClick={() => setForm((prev) => (prev ? { ...prev, poster: "" } : prev))}>Remove</Button>
+            </div>
+          )}
+        </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Course Type</label>

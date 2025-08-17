@@ -12,7 +12,10 @@ import {
   Calendar,
   TrendingUp,
   Award,
-  Clock
+  Clock,
+  Mail,
+  Send,
+  MessageSquare
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -347,6 +350,74 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-500">Subscription</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Contact Us */}
+      <div className="mt-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Contact Us</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a
+            href="https://wa.me/8801987718298"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col justify-between p-4 rounded-lg border bg-emerald-50 border-emerald-200 hover:bg-emerald-100 transition-colors"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <MessageSquare className="w-5 h-5 text-emerald-600" />
+              <span className="font-semibold text-emerald-700">WhatsApp</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-emerald-700">+8801987718298</span>
+              <span className="px-3 py-1 text-sm bg-emerald-600 text-white rounded">Message</span>
+            </div>
+          </a>
+
+          <a
+            href="https://m.me/insilicology"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col justify-between p-4 rounded-lg border bg-blue-50 border-blue-200 hover:bg-blue-100 transition-colors"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Send className="w-5 h-5 text-blue-600" />
+              <span className="font-semibold text-blue-700">Messenger</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-blue-700">m.me/insilicology</span>
+              <span className="px-3 py-1 text-sm bg-blue-600 text-white rounded">Open</span>
+            </div>
+          </a>
+
+          <a
+            href="mailto:insilicology@gmail.com"
+            className="flex flex-col justify-between p-4 rounded-lg border bg-gray-50 border-gray-200 hover:bg-gray-100 transition-colors"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Mail className="w-5 h-5 text-gray-700" />
+              <span className="font-semibold text-gray-800">Email</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">insilicology@gmail.com</span>
+              <span className="px-3 py-1 text-sm bg-gray-700 text-white rounded">Send</span>
+            </div>
+          </a>
+
+          <a
+            href="http://t.me/insilicology_official"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col justify-between p-4 rounded-lg border bg-sky-50 border-sky-200 hover:bg-sky-100 transition-colors"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Send className="w-5 h-5 text-sky-600" />
+              <span className="font-semibold text-sky-700">Telegram</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-sky-700">@insilicology_official</span>
+              <span className="px-3 py-1 text-sm bg-sky-600 text-white rounded">Join</span>
+            </div>
+          </a>
         </div>
       </div>
     </div>
