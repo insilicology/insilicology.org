@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
 
             {/* Subtitle */}
             <p className="text-xl text-gray-700 leading-relaxed max-w-lg">
-              Cutting-edge molecular modeling and drug discovery services for researchers and pharmaceutical companies.
+              Cutting-edge molecular modeling and drug discovery services for researchers and academic institutions.
             </p>
 
             {/* CTA Buttons */}
@@ -68,7 +68,7 @@ const HeroSection: React.FC = () => {
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">50+</div>
-                <div className="text-gray-600 text-sm">Pharmaceutical Partners</div>
+                <div className="text-gray-600 text-sm">Academic Partners</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">95%</div>
