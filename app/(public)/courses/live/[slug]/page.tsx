@@ -93,10 +93,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
     lessons: module.lessons?.sort((a, b) => a.position - b.position) || []
   })).sort((a, b) => a.position - b.position) || [];
 
-  // Calculate live sessions count
-  const liveSessionsCount = sortedModules.reduce((total, module) => 
-    total + module.lessons.filter(lesson => lesson.is_live_session).length, 0
-  );
+  // Live sessions count (remove if not needed)
 
   return (
     <div 
@@ -341,7 +338,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             {/* What You'll Learn */}
             {course.included && course.included.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">What you'll learn</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">What you&apos;ll learn</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {course.included.map((item: string, index: number) => (
                     <div key={index} className="flex items-start space-x-3">
