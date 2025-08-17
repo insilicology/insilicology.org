@@ -20,18 +20,18 @@ const HeroSection: React.FC = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold shadow-lg">
               <Sparkles className="w-4 h-4" />
-              Leading in Computational Biology & Drug Discovery
+              Leading in Computational Chemistry & Life Science
             </div>
 
             {/* Main Title */}
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
-                  Computational
+                  Computational Chemistry
                 </span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
-                  Biology Solutions
+                  Life Science Solutions
                 </span>
               </h1>
             </div>
