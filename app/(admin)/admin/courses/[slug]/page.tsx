@@ -1,181 +1,146 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Switch } from "@/components/ui/Switch";
-import toast, { Toaster } from "react-hot-toast";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useParams, useRouter } from "next/navigation";
 
-interface Lesson {
-  id?: string;
-  title: string;
-  position: number;
-  notes: string;
-  video_url: string;
-  is_live_session: boolean;
-  live_start_time: string;
-  duration_minutes: number;
-  module_id?: string;
-}
+type CourseType = "live" | "recorded";
 
-interface Module {
-  id?: string;
-  title: string;
-  position: number;
-  description: string;
-  course_id?: string;
-  lessons: Lesson[];
-}
+type ArrayField = "included" | "topics" | "roadmap" | "why_join";
 
-interface CourseForm {
-  id: string;
+interface EditCourseForm {
   title: string;
   slug: string;
+  type: CourseType;
   duration: string;
   price_regular: string;
   price_offer: string;
   poster: string;
-  og_image: string;
-  enroll_link: string;
-  certificate: string;
-  type: 'live' | 'recorded' | 'hybrid';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  starts_on: string;
-  is_published: boolean;
   description: string;
+  starts_on: string; // yyyy-mm-dd
+  is_published: boolean;
+  dates: string;
+  language: string;
+  seats: string;
+  time_set: string; // HH:MM
+  roadmap: string[];
+  why_join: string[];
   included: string[];
-  for_whom: string[];
-  requirements: string[];
   topics: string[];
 }
 
-type ArrayFieldName = 'included' | 'for_whom' | 'requirements' | 'topics';
-
-interface FormField {
-  name: keyof CourseForm;
-  label: string;
-  type?: 'text' | 'number' | 'checkbox';
-  value?: string | number;
+interface CourseUpdatePayload {
+  title: string;
+  slug: string;
+  type: CourseType;
+  duration: string | null;
+  price_regular: number;
+  price_offer: number;
+  poster: string | null;
+  description: string | null;
+  starts_on: string | null;
+  is_published: boolean;
+  dates: string | null;
+  language: string | null;
+  seats: string | null;
+  time_set: string | null; // HH:MM:SS
+  roadmap: string[];
+  why_join: string[];
+  included: string[];
+  topics: string[];
 }
 
 export default function EditCoursePage() {
-  const { slug } = useParams();
   const router = useRouter();
+  const { slug } = useParams();
   const supabase = createClientComponentClient();
 
-  const [modules, setModules] = useState<Module[]>([]);
-  const [form, setForm] = useState<CourseForm | null>(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [courseId, setCourseId] = useState<string>("");
+
   const [posterUploading, setPosterUploading] = useState(false);
-  const [posterError, setPosterError] = useState("");
+  const [posterError, setPosterError] = useState<string>("");
   const posterInputRef = useRef<HTMLInputElement>(null);
 
-  const formFields: FormField[] = [
-    { name: "title", label: "Course Title" },
-    { name: "slug", label: "Slug" },
-    { name: "duration", label: "Duration" },
-    { name: "price_regular", label: "Regular Price", type: "number" },
-    { name: "price_offer", label: "Offer Price", type: "number" },
-    { name: "poster", label: "Poster Image URL" },
-    { name: "og_image", label: "OG Image URL" },
-    { name: "enroll_link", label: "Enroll Link" },
-    { name: "certificate", label: "Certificate" },
-  ];
-
-  const defaultLesson = (): Lesson => ({
-    title: "",
-    position: 1,
-    notes: "",
-    video_url: "",
-    is_live_session: false,
-    live_start_time: "",
-    duration_minutes: 0,
-  });
-
-  const defaultModule = (): Module => ({
-    title: "",
-    position: modules.length + 1,
-    description: "",
-    lessons: [defaultLesson()],
-  });
+  const [form, setForm] = useState<EditCourseForm | null>(null);
 
   useEffect(() => {
+    const fetchCourse = async () => {
     if (!slug) return;
-
-    const fetchData = async () => {
       const { data, error } = await supabase
         .from("courses")
         .select("*")
         .eq("slug", slug)
         .single();
-
       if (error || !data) {
-        console.error("Error fetching course:", error);
-        toast.error("Error fetching course");
-        return router.push("/admin/courses");
+        setError("Failed to load course");
+        setLoading(false);
+        return;
       }
-
+      setCourseId(data.id);
       setForm({
-        ...data,
-        included: data.included || [""],
-        for_whom: data.for_whom || [""],
-        requirements: data.requirements?.split(",") || [""],
-        topics: data.topics || [""],
-        starts_on: data.starts_on?.split("T")[0] || "",
+        title: data.title || "",
+        slug: data.slug || "",
+        type: (data.type === "recorded" ? "recorded" : "live") as CourseType,
+        duration: data.duration || "",
+        price_regular: data.price_regular ? String(data.price_regular) : "",
+        price_offer: data.price_offer ? String(data.price_offer) : "",
+        poster: data.poster || "",
+        description: data.description || "",
+        starts_on: data.starts_on ? String(data.starts_on).split("T")[0] : "",
+        is_published: Boolean(data.is_published),
+        dates: data.dates || "",
+        language: data.language || "",
+        seats: data.seats || "",
+        time_set: data.time_set ? String(data.time_set).slice(0, 5) : "",
+        roadmap: Array.isArray(data.roadmap) ? data.roadmap : [""],
+        why_join: Array.isArray(data.why_join) ? data.why_join : [""],
+        included: Array.isArray(data.included) ? data.included : [""],
+        topics: Array.isArray(data.topics) ? data.topics : [""],
       });
-
-      const { data: mods, error: modErr } = await supabase
-        .from("modules")
-        .select("*, lessons(*)")
-        .eq("course_id", data.id)
-        .order("position", { ascending: true });
-
-      if (modErr) {
-        console.error("Error fetching modules:", modErr);
-        toast.error("Error fetching modules");
-      }
-
-      setModules(
-        (mods || []).map((mod) => ({
-          ...mod,
-          lessons: (mod.lessons || []).map((lesson: Lesson) => ({ ...lesson })),
-        }))
-      );
-
       setLoading(false);
     };
+    fetchCourse();
+  }, [slug, supabase]);
 
-    fetchData();
-  }, [slug, router, supabase]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
-    
-    setForm((prev) => {
-      if (!prev) return null;
-      
-      // Handle numeric fields
-      if (name === 'price_regular' || name === 'price_offer') {
-        return {
+    setForm((prev) => (prev ? {
           ...prev,
-          [name]: value
-        };
-      }
-      
-      return {
-        ...prev,
-        [name]: type === "checkbox" ? checked : value,
-      };
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    } : prev));
+  };
+
+  const handleArrayChange = (
+    name: ArrayField,
+    idx: number,
+    value: string
+  ) => {
+    setForm((prev) => {
+      if (!prev) return prev;
+      const arr = [...prev[name]];
+      arr[idx] = value;
+      return { ...prev, [name]: arr };
     });
   };
 
-  const handleArrayChange = (name: ArrayFieldName, idx: number, value: string) => {
-    if (!form) return;
-    const arr = [...form[name]];
-    arr[idx] = value;
-    setForm((prev) => prev ? { ...prev, [name]: arr } : null);
+  const handleArrayAdd = (name: ArrayField) => {
+    setForm((prev) => (prev ? { ...prev, [name]: [...prev[name], ""] } : prev));
+  };
+
+  const handleArrayRemove = (name: ArrayField, idx: number) => {
+    setForm((prev) => {
+      if (!prev) return prev;
+      const arr = [...prev[name]];
+      arr.splice(idx, 1);
+      return { ...prev, [name]: arr };
+    });
   };
 
   const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -234,98 +199,89 @@ export default function EditCoursePage() {
     if (file) void uploadPoster(file);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form) return;
+    setError("");
+    setSubmitting(true);
 
-    const updateData = {
-      ...form,
-      included: form.included,
-      for_whom: form.for_whom,
-      requirements: form.requirements.join(","),
-      topics: form.topics,
-      starts_on: form.starts_on || null,
-      price_regular: Number(form.price_regular),
-      price_offer: Number(form.price_offer),
+    if (!form.title || !form.slug || !form.type) {
+      setError("Title, slug and type are required.");
+      setSubmitting(false);
+      return;
+    }
+
+    const payload: CourseUpdatePayload = {
+      title: form.title,
+      slug: form.slug,
+      type: form.type,
+      duration: form.duration || null,
+      price_regular: form.price_regular ? Number(form.price_regular) : 0,
+      price_offer: form.price_offer ? Number(form.price_offer) : 0,
+      poster: form.poster || null,
+      description: form.description || null,
+      starts_on: form.starts_on ? new Date(form.starts_on).toISOString() : null,
+      is_published: form.is_published,
+      dates: form.dates || null,
+      language: form.language || null,
+      seats: form.seats || null,
+      time_set: form.time_set ? `${form.time_set}:00` : null,
+      roadmap: form.roadmap.filter((v) => v.trim().length > 0),
+      why_join: form.why_join.filter((v) => v.trim().length > 0),
+      included: form.included.filter((v) => v.trim().length > 0),
+      topics: form.topics.filter((v) => v.trim().length > 0),
     };
 
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from("courses")
-      .update(updateData)
-      .eq("id", form.id);
+      .update(payload)
+      .eq("id", courseId);
 
-    if (error) {
-      console.error(error);
-      toast.error("Update failed");
-    } else {
-      toast.success("Course updated!");
-      router.push("/admin/courses");
+    if (updateError) {
+      setError(updateError.message);
+      setSubmitting(false);
+      return;
     }
-
-    for (const moduleData of modules) {
-      let moduleId = moduleData.id;
-
-      if (moduleId) {
-        await supabase.from("modules").update({
-          title: moduleData.title,
-          description: moduleData.description,
-          position: moduleData.position,
-        }).eq("id", moduleId);
-      } else {
-        const { data: mod } = await supabase
-          .from("modules")
-          .insert({
-            course_id: form.id,
-            title: moduleData.title,
-            description: moduleData.description,
-            position: moduleData.position,
-          })
-          .select()
-          .single();
-        moduleId = mod?.id;
-      }
-
-      for (const lesson of moduleData.lessons) {
-        if (lesson.id) {
-          await supabase.from("lessons").update(lesson).eq("id", lesson.id);
-        } else {
-          await supabase.from("lessons").insert({
-            ...lesson,
-            module_id: moduleId,
-          });
-        }
-      }
-    }
-  };
-
-  const getInputValue = (field: FormField, form: CourseForm | null): string => {
-    if (!form) return "";
-    const value = form[field.name];
-    if (value === undefined) return "";
-    return String(value);
+    router.push("/admin/courses");
   };
 
   if (loading || !form) return <p className="p-6">লোড হচ্ছে...</p>;
 
   return (
     <div className="max-w-5xl mx-auto py-12 px-4">
-			<Toaster />
-      <h1 className="text-3xl font-bold mb-8">Edit Course: {form.title}</h1>
+      <h1 className="text-3xl font-bold mb-8">কোর্স আপডেট করুন</h1>
+      {error && (
+        <div className="mb-6 p-3 rounded bg-red-100 text-red-700">{error}</div>
+      )}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {formFields
-          .filter((f) => f.name !== "poster")
-          .map((f) => (
-            <div key={f.name}>
-              <label className="block text-sm font-medium text-gray-700">{f.label}</label>
-              <input
-                name={f.name}
-                type={f.type || "text"}
-                className="bg-white"
-                value={getInputValue(f, form)}
+        {[ 
+          { name: "title", label: "কোর্স শিরোনাম" },
+          { name: "slug", label: "Slug" },
+          { name: "duration", label: "Course Duration" },
+          { name: "price_regular", label: "Regular Price" },
+          { name: "price_offer", label: "Offer Price" },
+          { name: "description", label: "Description", isTextArea: true },
+        ].map((field: any) => (
+          <div key={field.name} className={field.isTextArea ? "md:col-span-2" : ""}>
+            <label className="block text-sm font-medium text-gray-700">{field.label}</label>
+            {field.isTextArea ? (
+              <textarea
+                name={field.name}
+                value={(form as any)[field.name] as string}
                 onChange={handleChange}
+                rows={4}
+                className="w-full border rounded-lg px-3 py-2 bg-white"
               />
-            </div>
-          ))}
+            ) : (
+            <input
+                name={field.name}
+                value={(form as any)[field.name] as string}
+              onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2 bg-white"
+            />
+            )}
+          </div>
+        ))}
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Poster Image</label>
@@ -365,213 +321,104 @@ export default function EditCoursePage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Course Type</label>
-          <select name="type" value={form.type} onChange={handleChange} className="w-full border rounded-lg px-3 py-2">
-            {["live","recorded","hybrid"].map(val => (
-              <option key={val} value={val}>{val}</option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Difficulty</label>
-          <select name="difficulty" value={form.difficulty} onChange={handleChange} className="w-full border rounded-lg px-3 py-2">
-            {["beginner","intermediate","advanced"].map(val => (
-              <option key={val} value={val}>{val}</option>
-            ))}
+          <select
+            name="type"
+            value={form.type}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2 bg-white"
+          >
+            <option value="live">Live</option>
+            <option value="recorded">Recorded</option>
           </select>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Start Date</label>
-          <input type="date" name="starts_on" className="bg-white" value={form.starts_on} onChange={handleChange} />
+          <input
+            type="date"
+            name="starts_on"
+            value={form.starts_on}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2 bg-white"
+          />
         </div>
 
-        <div className="flex items-center space-x-3">
-          <Switch id="is_published" checked={form.is_published} onCheckedChange={(val: boolean) => setForm((prev) => prev ? { ...prev, is_published: val } : null)} />
-          <label className="block text-sm font-medium text-gray-700">Publish Course?</label>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Dates (text)</label>
+          <input name="dates" value={form.dates} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Language</label>
+          <input name="language" value={form.language} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Seats (text)</label>
+          <input name="seats" value={form.seats} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Time (HH:MM 24h)</label>
+          <input type="time" name="time_set" value={form.time_set} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
         </div>
 
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Description</label>
-          <textarea name="description" className="bg-white" value={form.description} rows={5} onChange={handleChange} />
-        </div>
-
-        {(['for_whom', 'included', 'requirements', 'topics'] as ArrayFieldName[]).map((name) => (
+        {([
+          { name: "included", label: "What's included?" },
+          { name: "topics", label: "Topics (tags)" },
+        ] as ReadonlyArray<{ name: Extract<ArrayField, "included" | "topics">; label: string }>).map(({ name, label }) => (
           <div key={name} className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">{name === "for_whom" ? "Who is this for?" : name}</label>
+            <label className="block text-sm font-medium text-gray-700">{label}</label>
             {form[name].map((val, idx) => (
               <div key={idx} className="flex gap-2 mb-2">
                 <input 
                   value={val} 
-                  className="bg-white" 
-                  onChange={e => handleArrayChange(name, idx, e.target.value)} 
+                  onChange={(e) => handleArrayChange(name, idx, e.target.value)}
+                  className="w-full border rounded-lg px-3 py-2 bg-white"
                 />
-                <Button type="button" onClick={() => {
-                  const arr = [...form[name]];
-                  arr.splice(idx, 1);
-                  setForm((prev) => prev ? { ...prev, [name]: arr } : null);
-                }}>-</Button>
+                <Button type="button" onClick={() => handleArrayRemove(name, idx)}>
+                  -
+                </Button>
               </div>
             ))}
-            <Button type="button" onClick={() => {
-              const arr = [...form[name]];
-              arr.push("");
-              setForm((prev) => prev ? { ...prev, [name]: arr } : null);
-            }}>+ Add</Button>
+            <Button type="button" onClick={() => handleArrayAdd(name)}>+ Add</Button>
           </div>
         ))}
 
-        <div className="md:col-span-2 mt-8 bg-white p-4 rounded-md">
-					<h2 className="text-xl font-bold mb-4">Modules & Lessons</h2>
-
-					{modules.map((module, modIndex) => (
-						<div key={modIndex} className="border border-gray-300 rounded-md p-4 mb-6">
-							<div className="mb-2">
-								<label className="block text-sm font-medium text-gray-700">Module Title</label>
+        {([
+          { name: "roadmap", label: "Course Roadmap" },
+          { name: "why_join", label: "Why Join" },
+        ] as ReadonlyArray<{ name: Extract<ArrayField, "roadmap" | "why_join">; label: string }>).map(({ name, label }) => (
+          <div key={name} className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">{label}</label>
+            {form[name].map((val, idx) => (
+              <div key={idx} className="flex gap-2 mb-2">
 									<input
-									className="bg-white"
-									value={module.title}
-									onChange={(e) => {
-										const updated = [...modules];
-										updated[modIndex].title = e.target.value;
-										setModules(updated);
-									}}
-								/>
-							</div>
-							<div className="mb-2">
-								<label className="block text-sm font-medium text-gray-700">Module Description</label>
-								<textarea
-									className="bg-white"
-									value={module.description || ""}
-									onChange={(e) => {
-										const updated = [...modules];
-										updated[modIndex].description = e.target.value;
-										setModules(updated);
-									}}
-								/>
-							</div>
-
-							{module.lessons.map((lesson: Lesson, lessonIndex: number) => (
-								<div key={lessonIndex} className="border-l-4 border-purple-500 pl-4 my-4">
-									<label className="block text-sm font-medium text-gray-700">Lesson Title</label>
-									<input
-										className="bg-white"
-										value={lesson.title}
-										onChange={(e) => {
-											const updated = [...modules];
-											updated[modIndex].lessons[lessonIndex].title = e.target.value;
-											setModules(updated);
-										}}
-									/>
-									<label className="block text-sm font-medium text-gray-700">Notes</label>
-									<textarea
-										className="bg-white"
-										value={lesson.notes || ""}
-										onChange={(e) => {
-											const updated = [...modules];
-											updated[modIndex].lessons[lessonIndex].notes = e.target.value;
-											setModules(updated);
-										}}
-									/>
-									<label className="block text-sm font-medium text-gray-700">Video URL</label>
-									<input
-										className="bg-white"
-										value={lesson.video_url || ""}
-										onChange={(e) => {
-											const updated = [...modules];
-											updated[modIndex].lessons[lessonIndex].video_url = e.target.value;
-											setModules(updated);
-										}}
-									/>
-									<div className="flex items-center space-x-2 mt-2">
-										<Switch
-											checked={lesson.is_live_session}
-											onCheckedChange={(val) => {
-												const updated = [...modules];
-												updated[modIndex].lessons[lessonIndex].is_live_session = val;
-												setModules(updated);
-											}}
-										/>
-										<label className="block text-sm font-medium text-gray-700">Is Live Session?</label>
-									</div>
-									{lesson.is_live_session && (
-										<>
-											<label className="block text-sm font-medium text-gray-700">Live Start Time</label>
-											<input
-												className="bg-white"
-												type="datetime-local"
-												value={lesson.live_start_time || ""}
-												onChange={(e) => {
-													const updated = [...modules];
-													updated[modIndex].lessons[lessonIndex].live_start_time = e.target.value;
-													setModules(updated);
-												}}
-											/>
-											<label className="block text-sm font-medium text-gray-700">Duration (minutes)</label>
-											<input
-												className="bg-white"
-												type="number"
-												value={lesson.duration_minutes}
-												onChange={(e) => {
-													const updated = [...modules];
-													updated[modIndex].lessons[lessonIndex].duration_minutes = Number(e.target.value);
-													setModules(updated);
-												}}
-											/>
-										</>
-									)}
-									<Button
-										variant="default"
-										type="button"
-										className="mt-2 bg-red-500 text-white"
-										onClick={() => {
-											const updated = [...modules];
-											updated[modIndex].lessons.splice(lessonIndex, 1);
-											setModules(updated);
-										}}
-									>
-										Remove Lesson
+                  value={val}
+                  onChange={(e) => handleArrayChange(name, idx, e.target.value)}
+                  className="w-full border rounded-lg px-3 py-2 bg-white"
+                />
+                <Button type="button" onClick={() => handleArrayRemove(name, idx)}>
+                  -
 									</Button>
 								</div>
 							))}
-
-							<Button
-								type="button"
-								onClick={() => {
-									const updated = [...modules];
-									updated[modIndex].lessons.push(defaultLesson());
-									setModules(updated);
-								}}
-							>
-								+ Add Lesson
-							</Button>
-
-							<Button
-								type="button"
-								variant="default"
-								className="ml-4 bg-red-500 text-white"
-								onClick={() => {
-									const updated = [...modules];
-									updated.splice(modIndex, 1);
-									setModules(updated);
-								}}
-							>
-								Remove Module
-							</Button>
+            <Button type="button" onClick={() => handleArrayAdd(name)}>+ Add</Button>
 						</div>
 					))}
 
-					<Button
-						type="button"
-						className="mt-2"
-						onClick={() => setModules([...modules, defaultModule()])}
-					>
-						+ Add Module
-					</Button>
+        <div className="flex items-center space-x-3 md:col-span-2">
+          <Switch
+            id="is_published"
+            checked={form.is_published}
+            onCheckedChange={(checked) => setForm((prev) => (prev ? { ...prev, is_published: checked } : prev))}
+          />
+          <label className="block text-sm font-medium text-gray-700">Publish Course?</label>
 				</div>
 
-        <Button type="submit" className="md:col-span-2 mt-6">Save Changes</Button>
+        <div className="md:col-span-2">
+          <Button type="submit" disabled={submitting}>{submitting ? "Saving..." : "Save Changes"}</Button>
+        </div>
       </form>
     </div>
   );
 }
+
+
