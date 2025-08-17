@@ -47,14 +47,32 @@ export default function Header() {
             {/* Navigation Links */}
             <div className="flex items-center space-x-1">
               {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.route}
-                  className="px-4 py-2.5 text-gray-700 hover:text-gray-900 font-medium rounded-t-lg hover:bg-gray-100 transition-all duration-200 relative group"
-                >
-                  {link.label}
-                  <span className="absolute inset-x-0 bottom-0 h-0.5 bg-amber-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 rounded-full"></span>
-                </Link>
+                link.label === "Courses" ? (
+                  <div key={link.label} className="relative group">
+                    <Link
+                      href={link.route}
+                      className="px-4 py-2.5 text-gray-700 hover:text-gray-900 font-medium rounded-t-lg hover:bg-gray-100 transition-all duration-200 relative"
+                    >
+                      {link.label}
+                      <span className="absolute inset-x-0 bottom-0 h-0.5 bg-amber-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 rounded-full"></span>
+                    </Link>
+                    <div className="absolute left-0 top-full mt-1 w-52 bg-white border border-gray-100 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity">
+                      <div className="py-2">
+                        <Link href="/courses/live" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Live Courses</Link>
+                        <Link href="/courses/recorded" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Recorded Courses</Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.label}
+                    href={link.route}
+                    className="px-4 py-2.5 text-gray-700 hover:text-gray-900 font-medium rounded-t-lg hover:bg-gray-100 transition-all duration-200 relative group"
+                  >
+                    {link.label}
+                    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-amber-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 rounded-full"></span>
+                  </Link>
+                )
               ))}
             </div>
           </nav>
