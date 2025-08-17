@@ -6,16 +6,62 @@ import { Switch } from "@/components/ui/Switch";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
+type CourseType = "live" | "recorded";
+
+type ArrayField = "included" | "topics" | "roadmap" | "why_join";
+
+interface CreateCourseForm {
+  title: string;
+  slug: string;
+  type: CourseType;
+  duration: string;
+  price_regular: string; // kept as string for input; converted to number on submit
+  price_offer: string;   // kept as string for input; converted to number on submit
+  poster: string;
+  description: string;
+  starts_on: string; // yyyy-mm-dd
+  is_published: boolean;
+  dates: string;
+  language: string;
+  seats: string;
+  time_set: string; // HH:MM
+  roadmap: string[];
+  why_join: string[];
+  included: string[];
+  topics: string[];
+}
+
+interface CourseInsertPayload {
+  title: string;
+  slug: string;
+  type: CourseType;
+  duration: string | null;
+  price_regular: number;
+  price_offer: number;
+  poster: string | null;
+  description: string | null;
+  starts_on: string | null;
+  is_published: boolean;
+  dates: string | null;
+  language: string | null;
+  seats: string | null;
+  time_set: string | null; // HH:MM:SS
+  roadmap: string[];
+  why_join: string[];
+  included: string[];
+  topics: string[];
+}
+
 export default function CreateCoursePage() {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CreateCourseForm>({
     title: "",
     slug: "",
-    type: "live" as "live" | "recorded",
+    type: "live",
     duration: "",
     price_regular: "",
     price_offer: "",
@@ -45,7 +91,7 @@ export default function CreateCoursePage() {
   };
 
   const handleArrayChange = (
-    name: "included" | "topics" | "roadmap" | "why_join",
+    name: ArrayField,
     idx: number,
     value: string
   ) => {
@@ -56,11 +102,11 @@ export default function CreateCoursePage() {
     });
   };
 
-  const handleArrayAdd = (name: "included" | "topics" | "roadmap" | "why_join") => {
+  const handleArrayAdd = (name: ArrayField) => {
     setForm((prev) => ({ ...prev, [name]: [...prev[name], ""] }));
   };
 
-  const handleArrayRemove = (name: "included" | "topics" | "roadmap" | "why_join", idx: number) => {
+  const handleArrayRemove = (name: ArrayField, idx: number) => {
     setForm((prev) => {
       const arr = [...prev[name]];
       arr.splice(idx, 1);
@@ -79,7 +125,7 @@ export default function CreateCoursePage() {
       return;
     }
 
-    const payload: any = {
+    const payload: CourseInsertPayload = {
       title: form.title,
       slug: form.slug,
       type: form.type,
@@ -190,41 +236,47 @@ export default function CreateCoursePage() {
         </div>
 
         {/* Arrays */}
-        {[{ name: "included", label: "What's included?" }, { name: "topics", label: "Topics (tags)" }].map(({ name, label }) => (
+        {([
+          { name: "included", label: "What's included?" },
+          { name: "topics", label: "Topics (tags)" },
+        ] as ReadonlyArray<{ name: Extract<ArrayField, "included" | "topics">; label: string }>).map(({ name, label }) => (
           <div key={name} className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700">{label}</label>
-            {form[name as "included" | "topics"].map((val, idx) => (
+            {form[name].map((val, idx) => (
               <div key={idx} className="flex gap-2 mb-2">
                 <input
                   value={val}
-                  onChange={(e) => handleArrayChange(name as any, idx, e.target.value)}
+                  onChange={(e) => handleArrayChange(name, idx, e.target.value)}
                   className="w-full border rounded-lg px-3 py-2"
                 />
-                <Button type="button" onClick={() => handleArrayRemove(name as any, idx)}>
+                <Button type="button" onClick={() => handleArrayRemove(name, idx)}>
                   -
                 </Button>
               </div>
             ))}
-            <Button type="button" onClick={() => handleArrayAdd(name as any)}>+ Add</Button>
+            <Button type="button" onClick={() => handleArrayAdd(name)}>+ Add</Button>
           </div>
         ))}
 
-        {[{ name: "roadmap", label: "Course Roadmap" }, { name: "why_join", label: "Why Join" }].map(({ name, label }) => (
+        {([
+          { name: "roadmap", label: "Course Roadmap" },
+          { name: "why_join", label: "Why Join" },
+        ] as ReadonlyArray<{ name: Extract<ArrayField, "roadmap" | "why_join">; label: string }>).map(({ name, label }) => (
           <div key={name} className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700">{label}</label>
-            {form[name as "roadmap" | "why_join"].map((val, idx) => (
+            {form[name].map((val, idx) => (
               <div key={idx} className="flex gap-2 mb-2">
                 <input
                   value={val}
-                  onChange={(e) => handleArrayChange(name as any, idx, e.target.value)}
+                  onChange={(e) => handleArrayChange(name, idx, e.target.value)}
                   className="w-full border rounded-lg px-3 py-2"
                 />
-                <Button type="button" onClick={() => handleArrayRemove(name as any, idx)}>
+                <Button type="button" onClick={() => handleArrayRemove(name, idx)}>
                   -
                 </Button>
               </div>
             ))}
-            <Button type="button" onClick={() => handleArrayAdd(name as any)}>+ Add</Button>
+            <Button type="button" onClick={() => handleArrayAdd(name)}>+ Add</Button>
           </div>
         ))}
 
