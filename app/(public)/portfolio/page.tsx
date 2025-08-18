@@ -70,11 +70,11 @@ export default async function PortfolioPage() {
               className="group relative bg-white rounded-xl overflow-hidden shadow-lg shadow-purple-200 hover:shadow-xl transition"
             >
               <div className="relative w-full h-48 overflow-hidden">
-                <Image
+                <img
                   src={imageSrc}
                   alt={project.project_name}
-                  fill
                   className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
               <div className="p-5">

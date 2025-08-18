@@ -59,7 +59,7 @@ export default function AdminPortfolioListPage() {
             return (
               <div key={p.id} className="border rounded-lg shadow bg-white overflow-hidden">
                 <div className="relative w-full h-44">
-                  <Image src={thumb} alt={p.project_name} fill className="object-cover" />
+                  <img src={thumb} alt={p.project_name} className="object-cover w-full h-full" loading="lazy" />
                 </div>
                 <div className="p-4 space-y-1">
                   <h2 className="text-lg font-semibold">{p.project_name}</h2>
