@@ -3,6 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
+type Params = {
+  slug: string;
+};
+
 export async function generateStaticParams() {
   const supabase = await createClient();
   const { data } = await supabase.from("portfolio").select("slug");
@@ -10,7 +14,8 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params: rawParams }: { params: Promise<Params> }) {
+  const params = await rawParams;
   const supabase = await createClient();
   const { data } = await supabase
     .from("portfolio")
@@ -29,7 +34,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   } as const;
 }
 
-export default async function PortfolioDetailPage({ params }: { params: { slug: string } }) {
+export default async function PortfolioDetailPage({ params: rawParams }: { params: Promise<Params> }) {
+  const params = await rawParams;
   const supabase = await createClient();
   const { data: project } = await supabase
     .from("portfolio")
