@@ -11,6 +11,7 @@ import AuthButton from './AuthButton';
 const navLinks = [
   { label: "Home", route: "/" },
   { label: "Courses", route: "/courses" },
+  { label: "Portfolio", route: "/portfolio" },
   { label: "Blog", route: "/blog" },
   { label: "Contact", route: "/contact" },
 ];
