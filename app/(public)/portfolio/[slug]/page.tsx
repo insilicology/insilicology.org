@@ -7,6 +7,18 @@ type Params = {
   slug: string;
 };
 
+type Portfolio = {
+  id: string;
+  slug: string;
+  project_name: string;
+  project_description: string | null;
+  project_duration: string | null;
+  project_country: string | null;
+  project_budget: string | null;
+  images: string[] | null;
+  files: string[] | null;
+};
+
 export async function generateStaticParams() {
   const supabase = await createClient();
   const { data } = await supabase.from("portfolio").select("slug");
@@ -19,18 +31,19 @@ export async function generateMetadata({ params: rawParams }: { params: Promise<
   const supabase = await createClient();
   const { data } = await supabase
     .from("portfolio")
-    .select("project_name, project_description")
+    .select("project_name, project_description, images")
     .eq("slug", params.slug)
     .maybeSingle();
   const title = data ? data.project_name : "Portfolio Project";
   const description = data?.project_description || "Project details and insights.";
+  const ogImage = (data as Portfolio | null)?.images?.[0];
   return {
     title,
     description,
     metadataBase: new URL("https://insilicology.org"),
     alternates: { canonical: `/portfolio/${params.slug}` },
-    openGraph: { title, description },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, images: ogImage ? [{ url: ogImage }] : undefined },
+    twitter: { card: "summary_large_image", title, description, images: ogImage ? [{ url: ogImage }] : undefined },
   } as const;
 }
 
