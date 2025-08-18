@@ -254,20 +254,20 @@ export default function EditCoursePage() {
         <div className="mb-6 p-3 rounded bg-red-100 text-red-700">{error}</div>
       )}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {[ 
+        {([
           { name: "title", label: "কোর্স শিরোনাম" },
           { name: "slug", label: "Slug" },
           { name: "duration", label: "Course Duration" },
           { name: "price_regular", label: "Regular Price" },
           { name: "price_offer", label: "Offer Price" },
           { name: "description", label: "Description", isTextArea: true },
-        ].map((field: any) => (
+        ] as ReadonlyArray<{ name: "title" | "slug" | "duration" | "price_regular" | "price_offer" | "description"; label: string; isTextArea?: boolean }>).map((field) => (
           <div key={field.name} className={field.isTextArea ? "md:col-span-2" : ""}>
             <label className="block text-sm font-medium text-gray-700">{field.label}</label>
             {field.isTextArea ? (
               <textarea
                 name={field.name}
-                value={(form as any)[field.name] as string}
+                value={form[field.name]}
                 onChange={handleChange}
                 rows={4}
                 className="w-full border rounded-lg px-3 py-2 bg-white"
@@ -275,7 +275,7 @@ export default function EditCoursePage() {
             ) : (
             <input
                 name={field.name}
-                value={(form as any)[field.name] as string}
+                value={form[field.name]}
               onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2 bg-white"
             />

@@ -1,6 +1,7 @@
 -- Create portfolio table
 CREATE TABLE portfolio (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
   project_name TEXT NOT NULL,
   project_description TEXT,
   project_duration TEXT,

@@ -3,18 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-type Portfolio = {
-  id: string;
-  slug: string;
-  project_name: string;
-  project_description: string | null;
-  project_duration: string | null;
-  project_country: string | null;
-  project_budget: string | null;
-  images: string[] | null;
-  files: string[] | null;
-};
-
 export async function generateStaticParams() {
   const supabase = await createClient();
   const { data } = await supabase.from("portfolio").select("slug");

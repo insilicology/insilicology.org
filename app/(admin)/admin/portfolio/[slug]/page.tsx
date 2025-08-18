@@ -46,14 +46,18 @@ export default function EditPortfolioPage() {
     fetchProject();
   }, [params.slug, supabase]);
 
-  const updateField = (field: keyof Portfolio, value: any) => {
-    setProject((prev) => (prev ? { ...prev, [field]: value } : prev));
+  const updateField = <K extends keyof Portfolio>(field: K, value: Portfolio[K]) => {
+    setProject((prev) => (prev ? ({ ...prev, [field]: value } as Portfolio) : prev));
   };
 
   const uploadToBucket = async (files: File[], type: "images" | "files") => {
     if (!project) return;
     if (files.length === 0) return;
-    type === "images" ? setUploadingImages(true) : setUploadingFiles(true);
+    if (type === "images") {
+      setUploadingImages(true);
+    } else {
+      setUploadingFiles(true);
+    }
     try {
       const safeSlug = (project.slug || project.project_name || "project").replace(/[^a-zA-Z0-9-_]/g, "-");
       for (const file of files) {
@@ -72,7 +76,11 @@ export default function EditPortfolioPage() {
         }
       }
     } finally {
-      type === "images" ? setUploadingImages(false) : setUploadingFiles(false);
+      if (type === "images") {
+        setUploadingImages(false);
+      } else {
+        setUploadingFiles(false);
+      }
     }
   };
 
