@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { ArrowRight, Video, Clock, Users } from "lucide-react";
 
@@ -61,8 +60,8 @@ export default async function AllCoursesPage() {
         </p>
       </div>
 
-      {/* Course List - Single Column */}
-      <div className="grid grid-cols-1 gap-8">
+      {/* Course List - 3 Columns on Medium+ */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
         {courses.map((course) => (
           <Link
             key={course.slug}
@@ -71,11 +70,11 @@ export default async function AllCoursesPage() {
           >
             {/* Course Image */}
             <div className="relative w-full h-48 overflow-hidden">
-              <Image
+              <img
                 src={course.poster}
                 alt={course.title}
-                fill
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
               />
               {/* Live Badge */}
               <div className="absolute top-3 left-3 flex gap-2">

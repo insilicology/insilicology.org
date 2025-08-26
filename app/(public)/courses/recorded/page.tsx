@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { ArrowRight, Video, Clock, Users } from "lucide-react";
 
@@ -57,30 +56,30 @@ export default async function AllCoursesPage() {
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Recorded Courses</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Learn directly with our experts and ask questions
+          Learn at your own pace with our recorded content
         </p>
       </div>
 
-      {/* Course Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Course Grid - 3 Columns on Medium+ */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
         {courses.map((course) => (
           <Link
             key={course.slug}
             href={`/courses/${course.type.toLowerCase()}/${course.slug}`}
-            className="group relative bg-white rounded-xl overflow-hidden shadow-lg shadow-red-100 hover:shadow-xl transition-all duration-300 border border-gray-100"
+            className="group relative bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-100 hover:shadow-xl transition-all duration-300 border border-gray-100"
           >
             {/* Course Image */}
             <div className="relative w-full h-48 overflow-hidden">
-              <Image
+              <img
                 src={course.poster}
                 alt={course.title}
-                fill
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
               />
-              {/* Live Badge */}
+              {/* Recorded Badge */}
               <div className="absolute top-3 left-3 flex gap-2">
-                <span className="text-xs px-3 py-1 rounded-full text-white font-medium shadow-sm bg-red-600 border border-red-500">
-                  লাইভ
+                <span className="text-xs px-3 py-1 rounded-full text-white font-medium shadow-sm bg-blue-600 border border-blue-500">
+                  Recorded
                 </span>
                 {course.duration && (
                   <span className="text-xs bg-gray-800 text-white px-2 py-1 rounded-full font-medium shadow-sm">
@@ -94,7 +93,7 @@ export default async function AllCoursesPage() {
 
             {/* Course Content */}
             <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-200 line-clamp-2">
+              <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                 {course.title}
               </h2>
               <p className="text-sm text-gray-600 mb-4 line-clamp-3">
@@ -111,18 +110,18 @@ export default async function AllCoursesPage() {
                 )}
                 <div className="flex items-center text-xs text-gray-500">
                   <Video className="w-3 h-3 mr-2" />
-                  <span>Live Session</span>
+                  <span>Self-paced</span>
                 </div>
                 <div className="flex items-center text-xs text-gray-500">
                   <Users className="w-3 h-3 mr-2" />
-                  <span>All</span>
+                  <span>All Levels</span>
                 </div>
               </div>
 
               {/* CTA Section */}
               <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                <span className="text-red-600 font-semibold text-sm">Learn more</span>
-                <ArrowRight size={16} className="text-red-600 group-hover:translate-x-1 transition-transform duration-200" />
+                <span className="text-blue-600 font-semibold text-sm">Learn more</span>
+                <ArrowRight size={16} className="text-blue-600 group-hover:translate-x-1 transition-transform duration-200" />
               </div>
             </div>
           </Link>
@@ -131,12 +130,12 @@ export default async function AllCoursesPage() {
 
       {/* Bottom CTA */}
       <div className="text-center mt-16">
-        <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-8 border border-red-100">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-100">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Looking for more courses?</h3>
           <p className="text-gray-600 mb-6">Check out our live courses</p>
           <Link
             href="/courses/live"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white font-semibold rounded-lg hover:from-red-700 hover:to-pink-700 transition-all duration-200"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200"
           >
             Live Courses
             <ArrowRight size={16} className="ml-2" />

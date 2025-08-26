@@ -1,6 +1,5 @@
 
 import Link from "next/link";
-import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { ArrowRight } from "lucide-react";
 
@@ -36,11 +35,11 @@ export default async function CourseArchiveAll() {
             className="group relative bg-white rounded-xl overflow-hidden shadow-lg shadow-purple-200 hover:shadow-xl transition"
           >
             <div className="relative w-full h-48 overflow-hidden">
-              <Image
+              <img
                 src={course.poster}
                 alt={course.title}
-                fill
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
               />
               <div className="absolute top-2 left-2 flex gap-2">
                 <span

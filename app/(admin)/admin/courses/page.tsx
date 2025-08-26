@@ -32,6 +32,7 @@ export default function CoursesListPage() {
       if (error) {
         console.error("Error fetching courses:", error.message);
       } else {
+        console.log("Fetched courses:", data);
         setCourses(data as Course[]);
       }
 
@@ -40,6 +41,12 @@ export default function CoursesListPage() {
 
     fetchCourses();
   }, []);
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error("Image failed to load:", e.currentTarget.src);
+    e.currentTarget.style.display = 'none';
+    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
@@ -61,18 +68,26 @@ export default function CoursesListPage() {
               key={course.id}
               className="border rounded-lg shadow hover:shadow-md transition bg-white overflow-hidden"
             >
-              {course.poster ? (
-                <img
-                  src={course.poster}
-                  alt={course.title}
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
-                  No Image
-                </div>
-              )}
+              <div className="relative w-full h-48">
+                {course.poster ? (
+                  <>
+                    <img
+                      src={course.poster}
+                      alt={course.title}
+                      className="w-full h-48 object-cover"
+                      loading="lazy"
+                      onError={handleImageError}
+                    />
+                    <div className="hidden w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                      Image failed to load
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                    No Image
+                  </div>
+                )}
+              </div>
 
               <div className="p-4 space-y-2">
                 <h2 className="text-lg font-semibold">{course.title}</h2>
