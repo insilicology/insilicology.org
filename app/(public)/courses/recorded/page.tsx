@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowRight, Video, Clock, Users } from "lucide-react";
+import { ArrowRight, Video, Clock, Users, Star, Tag } from "lucide-react";
 
 export async function generateMetadata() {
   return {
@@ -37,8 +37,8 @@ export default async function AllCoursesPage() {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16 text-center">
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Video className="w-8 h-8 text-red-600" />
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Video className="w-8 h-8 text-blue-600" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Recorded Courses</h1>
           <p className="text-gray-600 text-lg">No recorded courses found. Please try again later.</p>
@@ -51,8 +51,8 @@ export default async function AllCoursesPage() {
     <div className="max-w-7xl mx-auto px-4 py-10 md:py-16">
       {/* Header Section */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
-          <Video className="w-8 h-8 text-red-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+          <Video className="w-8 h-8 text-blue-600" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Recorded Courses</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -66,7 +66,7 @@ export default async function AllCoursesPage() {
           <Link
             key={course.slug}
             href={`/courses/${course.type.toLowerCase()}/${course.slug}`}
-            className="group relative bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-100 hover:shadow-xl transition-all duration-300 border border-gray-100"
+            className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200"
           >
             {/* Course Image */}
             <div className="relative w-full h-48 overflow-hidden">
@@ -76,52 +76,108 @@ export default async function AllCoursesPage() {
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              
               {/* Recorded Badge */}
-              <div className="absolute top-3 left-3 flex gap-2">
-                <span className="text-xs px-3 py-1 rounded-full text-white font-medium shadow-sm bg-blue-600 border border-blue-500">
+              <div className="absolute top-3 left-3">
+                <span className="text-xs px-3 py-1.5 rounded-full text-white font-semibold shadow-lg bg-gradient-to-r from-blue-500 to-cyan-500">
                   Recorded
                 </span>
-                {course.duration && (
-                  <span className="text-xs bg-gray-800 text-white px-2 py-1 rounded-full font-medium shadow-sm">
-                    {course.duration}
-                  </span>
-                )}
               </div>
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Price Badge */}
+              <div className="absolute top-3 right-3">
+                <div className="bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-lg">
+                  <div className="flex items-center gap-1">
+                    <Tag className="w-3 h-3 text-blue-600" />
+                    <span className="text-xs font-bold text-gray-900">
+                      {course.price_offer ? `৳${course.price_offer}` : "Free"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Duration Badge */}
+              <div className="absolute bottom-3 left-3">
+                <div className="bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3 h-3 text-white" />
+                    <span className="text-xs font-semibold text-white">
+                      {course.duration}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Course Content */}
             <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+              {/* Title */}
+              <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                 {course.title}
               </h2>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+              
+              {/* Description */}
+              <p className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                 {course.description}
               </p>
 
-              {/* Course Features */}
-              <div className="space-y-2 mb-4">
-                {course.duration && (
-                  <div className="flex items-center text-xs text-gray-500">
-                    <Clock className="w-3 h-3 mr-2" />
-                    <span>{course.duration}</span>
-                  </div>
-                )}
-                <div className="flex items-center text-xs text-gray-500">
-                  <Video className="w-3 h-3 mr-2" />
-                  <span>Self-paced</span>
-                </div>
-                <div className="flex items-center text-xs text-gray-500">
-                  <Users className="w-3 h-3 mr-2" />
+              {/* Course Details */}
+              <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
+                <div className="flex items-center gap-1.5">
+                  <Users className="w-4 h-4" />
                   <span>All Levels</span>
                 </div>
+                <div className="flex items-center gap-1.5">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span>4.8</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Video className="w-4 h-4" />
+                  <span>Self-paced</span>
+                </div>
+              </div>
+
+              {/* Pricing Section */}
+              <div className="mb-4">
+                {course.price_offer && course.price_regular && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-blue-600">
+                      ৳{course.price_offer}
+                    </span>
+                    {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                      <span className="text-sm text-gray-500 line-through">
+                        ৳{course.price_regular}
+                      </span>
+                    )}
+                    {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                        Save ৳{parseInt(course.price_regular) - parseInt(course.price_offer)}
+                      </span>
+                    )}
+                  </div>
+                )}
+                {!course.price_offer && course.price_regular && (
+                  <span className="text-2xl font-bold text-gray-900">
+                    ৳{course.price_regular}
+                  </span>
+                )}
+                {!course.price_offer && !course.price_regular && (
+                  <span className="text-lg font-bold text-green-600">
+                    Free
+                  </span>
+                )}
               </div>
 
               {/* CTA Section */}
               <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                <span className="text-blue-600 font-semibold text-sm">Learn more</span>
-                <ArrowRight size={16} className="text-blue-600 group-hover:translate-x-1 transition-transform duration-200" />
+                <span className="text-blue-600 font-semibold text-sm group-hover:text-blue-700 transition-colors">
+                  View Details
+                </span>
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <ArrowRight size={16} className="text-white group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             </div>
           </Link>

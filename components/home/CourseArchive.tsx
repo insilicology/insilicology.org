@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowRight, Zap, BookOpen } from "lucide-react";
+import { ArrowRight, Zap, BookOpen, Clock, Users, Star, Tag } from "lucide-react";
 
 export const metadata = {
   title: "All Courses",
@@ -57,12 +57,13 @@ export default async function CourseArchive() {
             <Link
               key={course.slug}
               href={`/courses/${course.type.toLowerCase()}/${course.slug}`}
-              className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-200 hover:border-transparent"
+              className="group relative bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-200 hover:border-purple-300"
             >
               {/* Animated Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <div className="relative">
+                {/* Image Section */}
                 <div className="relative w-full h-48 overflow-hidden">
                   <Image
                     src={course.poster}
@@ -70,32 +71,106 @@ export default async function CourseArchive() {
                     fill
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="absolute top-3 left-3 flex gap-2">
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  
+                  {/* Course Type Badge */}
+                  <div className="absolute top-3 left-3">
                     <span
-                      className={`text-xs px-3 py-1 rounded-full text-white font-medium shadow-lg ${
+                      className={`text-xs px-3 py-1.5 rounded-full text-white font-semibold shadow-lg ${
                         course.type === "live" 
                           ? "bg-gradient-to-r from-red-500 to-pink-500" 
                           : "bg-gradient-to-r from-blue-500 to-cyan-500"
                       }`}
                     >
-                      {course.type.charAt(0).toUpperCase() + course.type.slice(1).toLowerCase()}
-                    </span>
-                    <span className="text-xs bg-gradient-to-r from-gray-700 to-gray-800 text-white px-3 py-1 rounded-full font-medium shadow-lg">
-                      {course.duration}
+                      {course.type === "live" ? "Live" : "Recorded"}
                     </span>
                   </div>
+
+                  {/* Price Badge */}
+                  <div className="absolute top-3 right-3">
+                    <div className="bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-lg">
+                      <div className="flex items-center gap-1">
+                        <Tag className="w-3 h-3 text-purple-600" />
+                        <span className="text-xs font-bold text-gray-900">
+                          {course.price_offer ? `৳${course.price_offer}` : "Free"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Duration Badge */}
+                  <div className="absolute bottom-3 left-3">
+                    <div className="bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3 h-3 text-white" />
+                        <span className="text-xs font-semibold text-white">
+                          {course.duration}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Decorative Elements */}
-                  <div className="absolute top-3 right-3 w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute top-3 right-12 w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
                 
+                {/* Content Section */}
                 <div className="p-6 relative">
-                  <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                  {/* Title */}
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors line-clamp-2">
                     {course.title}
                   </h2>
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-4 group-hover:text-gray-700 transition-colors">
+                  
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 line-clamp-2 mb-4 group-hover:text-gray-700 transition-colors leading-relaxed">
                     {course.description}
                   </p>
+
+                  {/* Course Details */}
+                  <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-4 h-4" />
+                      <span>Unlimited</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Star className="w-4 h-4 text-yellow-500" />
+                      <span>4.8</span>
+                    </div>
+                  </div>
+
+                  {/* Pricing Section */}
+                  <div className="mb-4">
+                    {course.price_offer && course.price_regular && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold text-purple-600">
+                          ৳{course.price_offer}
+                        </span>
+                        {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ৳{course.price_regular}
+                          </span>
+                        )}
+                        {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                            Save ৳{parseInt(course.price_regular) - parseInt(course.price_offer)}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {!course.price_offer && course.price_regular && (
+                      <span className="text-2xl font-bold text-gray-900">
+                        ৳{course.price_regular}
+                      </span>
+                    )}
+                    {!course.price_offer && !course.price_regular && (
+                      <span className="text-lg font-bold text-green-600">
+                        Free
+                      </span>
+                    )}
+                  </div>
+
+                  {/* CTA Button */}
                   <div className="flex items-center justify-between">
                     <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700 transition-colors">
                       আরও জানুন
