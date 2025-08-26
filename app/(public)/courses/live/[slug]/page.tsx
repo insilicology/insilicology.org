@@ -127,7 +127,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                   {course.title}
                 </h1>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                   {course.description}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">

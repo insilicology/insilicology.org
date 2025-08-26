@@ -110,7 +110,7 @@ export default async function RecordedCoursePage({ params }: { params: Promise<{
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
                   {course.title}
                 </h1>
-                <p className="text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                <p className="text-gray-600 max-w-4xl mx-auto leading-relaxed whitespace-pre-line">
                   {course.description}
                 </p>
               </div>
