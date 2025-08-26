@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Course {
   id: string;
@@ -54,7 +53,7 @@ export default function CoursesListPage() {
       {loading ? (
         <p>লোড হচ্ছে...</p>
       ) : courses.length === 0 ? (
-        <p className="text-gray-500">কোনো কোর্স পাওয়া যায়নি।</p>
+        <p className="text-gray-500">কোনো কোর্স পাওয়া যায়নি।</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
@@ -63,12 +62,11 @@ export default function CoursesListPage() {
               className="border rounded-lg shadow hover:shadow-md transition bg-white overflow-hidden"
             >
               {course.poster ? (
-                <Image
+                <img
                   src={course.poster}
                   alt={course.title}
-                  width={400}
-                  height={200}
                   className="w-full h-48 object-cover"
+                  loading="lazy"
                 />
               ) : (
                 <div className="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
@@ -86,7 +84,7 @@ export default function CoursesListPage() {
                   <span className="line-through text-gray-400 mr-2">
                     ৳{course.price_regular ?? "N/A"}
                   </span>
-                  <span className="font-bold text-green-600">
+                  <span className="text-green-600 font-bold">
                     ৳{course.price_offer ?? course.price_regular ?? "N/A"}
                   </span>
                 </div>
