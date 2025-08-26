@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { Clock, Users, Award, CheckCircle, BookOpen, Target, FileText, Calendar, Video, Sparkles, Zap } from "lucide-react";
 import Link from "next/link";
 import LiveCourseModules from "@/components/courses/live/LiveCourseModules";
-import Image from "next/image";
 import LiveCourseEnrollForm from "@/components/courses/live/LiveCourseEnrollForm";
 
 async function getCourse(slug: string) {
@@ -112,12 +111,11 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="relative w-full h-40 md:h-56 bg-gray-100">
                 {course.poster ? (
-                  <Image
+                  <img
                     src={course.poster}
                     alt={course.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 768px"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -384,7 +382,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
             )}
 
             {/* Course Roadmap - modern UI */}
-            {course.roadmap && course.roadmap.length > 0 && (
+            {/* {course.roadmap && course.roadmap.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200">
                   <div className="flex items-center gap-3 mb-4">
@@ -408,7 +406,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Why Join - modern UI */}
             {course.why_join && course.why_join.length > 0 && (
@@ -442,7 +440,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Certificate</h2>
                 <div className="flex justify-center rounded-sm border-2 border-gray-300 overflow-hidden">
-                  <Image src="/certificates/wordpress-cert.png" alt="Certificate" width={600} height={300} className="rounded-sm" />
+                  <img src="/certificates/wordpress-cert.png" alt="Certificate" className="w-full max-w-md h-auto rounded-sm" loading="lazy" />
                 </div>
               </div>
             )}
