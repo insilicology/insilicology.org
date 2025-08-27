@@ -356,8 +356,9 @@ export default function EditCoursePage() {
           <input name="seats" value={form.seats} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Time (HH:MM 24h)</label>
+          <label className="block text-sm font-medium text-gray-700">Time (HH:MM 24h UTC)</label>
           <input type="time" name="time_set" value={form.time_set} onChange={handleChange} className="w-full border rounded-lg px-3 py-2 bg-white" />
+          <p className="text-xs text-gray-500 mt-1">All times are in UTC (Coordinated Universal Time)</p>
         </div>
 
         {([

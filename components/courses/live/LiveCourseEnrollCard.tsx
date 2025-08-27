@@ -40,15 +40,15 @@ export default function LiveCourseEnrollCard({ course }: CourseEnrollCardProps) 
           {hasDiscount ? (
             <div className="flex items-center space-x-3">
               <span className="text-3xl font-bold text-gray-900">
-                ৳{course.price_offer?.toLocaleString('en-US')}
+                ${course.price_offer?.toLocaleString('en-US')}
               </span>
               <span className="text-lg text-gray-500 line-through">
-                ৳{course.price_regular?.toLocaleString('en-US')}
+                ${course.price_regular?.toLocaleString('en-US')}
               </span>
             </div>
           ) : (
             <div className="text-3xl font-bold text-gray-900">
-              ৳{course.price_regular?.toLocaleString('en-US') || 'Free'}
+              ${course.price_regular?.toLocaleString('en-US') || 'Free'}
             </div>
           )}
         </div>

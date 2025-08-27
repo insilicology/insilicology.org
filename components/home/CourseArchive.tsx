@@ -93,7 +93,7 @@ export default async function CourseArchive() {
                       <div className="flex items-center gap-1">
                         <Tag className="w-3 h-3 text-purple-600" />
                         <span className="text-xs font-bold text-gray-900">
-                          {course.price_offer ? `৳${course.price_offer}` : "Free"}
+                          {course.price_offer ? `$${course.price_offer}` : "Free"}
                         </span>
                       </div>
                     </div>
@@ -144,23 +144,23 @@ export default async function CourseArchive() {
                     {course.price_offer && course.price_regular && (
                       <div className="flex items-center gap-2">
                         <span className="text-2xl font-bold text-purple-600">
-                          ৳{course.price_offer}
+                          ${course.price_offer}
                         </span>
                         {parseInt(course.price_regular) > parseInt(course.price_offer) && (
                           <span className="text-sm text-gray-500 line-through">
-                            ৳{course.price_regular}
+                            ${course.price_regular}
                           </span>
                         )}
                         {parseInt(course.price_regular) > parseInt(course.price_offer) && (
                           <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-                            Save ৳{parseInt(course.price_regular) - parseInt(course.price_offer)}
+                            Save ${parseInt(course.price_regular) - parseInt(course.price_offer)}
                           </span>
                         )}
                       </div>
                     )}
                     {!course.price_offer && course.price_regular && (
                       <span className="text-2xl font-bold text-gray-900">
-                        ৳{course.price_regular}
+                        ${course.price_regular}
                       </span>
                     )}
                     {!course.price_offer && !course.price_regular && (

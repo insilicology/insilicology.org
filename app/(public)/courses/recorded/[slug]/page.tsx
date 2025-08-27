@@ -114,6 +114,43 @@ export default async function RecordedCoursePage({ params }: { params: Promise<{
                   {course.description}
                 </p>
               </div>
+              
+              {/* Pricing Section */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Course Fee</h3>
+                    {course.price_offer && course.price_regular ? (
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl font-bold text-blue-600">
+                          ${course.price_offer}
+                        </span>
+                        {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                          <span className="text-lg text-gray-500 line-through">
+                            ${course.price_regular}
+                          </span>
+                        )}
+                      </div>
+                    ) : course.price_regular ? (
+                      <span className="text-3xl font-bold text-gray-900">
+                        ${course.price_regular}
+                      </span>
+                    ) : (
+                      <span className="text-2xl font-bold text-green-600">
+                        Free
+                      </span>
+                    )}
+                  </div>
+                  {course.price_offer && course.price_regular && parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                    <div className="text-right">
+                      <div className="text-sm text-gray-600 mb-1">You Save</div>
+                      <div className="text-xl font-bold text-green-600">
+                        ${parseInt(course.price_regular) - parseInt(course.price_offer)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Course Overview */}

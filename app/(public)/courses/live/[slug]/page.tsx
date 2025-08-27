@@ -130,6 +130,44 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                 <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                   {course.description}
                 </p>
+                
+                {/* Pricing Section */}
+                <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Course Fee</h3>
+                      {course.price_offer && course.price_regular ? (
+                        <div className="flex items-center gap-3">
+                          <span className="text-3xl font-bold text-purple-600">
+                            ${course.price_offer}
+                          </span>
+                          {parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                            <span className="text-lg text-gray-500 line-through">
+                              ${course.price_regular}
+                            </span>
+                          )}
+                        </div>
+                      ) : course.price_regular ? (
+                        <span className="text-3xl font-bold text-gray-900">
+                          ${course.price_regular}
+                        </span>
+                      ) : (
+                        <span className="text-2xl font-bold text-green-600">
+                          Free
+                        </span>
+                      )}
+                    </div>
+                    {course.price_offer && course.price_regular && parseInt(course.price_regular) > parseInt(course.price_offer) && (
+                      <div className="text-right">
+                        <div className="text-sm text-gray-600 mb-1">You Save</div>
+                        <div className="text-xl font-bold text-green-600">
+                          ${parseInt(course.price_regular) - parseInt(course.price_offer)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
                 <div className="mt-4 flex flex-wrap gap-2">
                   {course.duration && (
                     <span className="inline-flex items-center text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border">
@@ -200,7 +238,7 @@ export default async function LiveCoursePage({ params }: { params: Promise<{ slu
                   {course.time_set && (
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-green-500" />
-                      <span><span className="font-semibold">Time:</span> {String(course.time_set).slice(0,5)}</span>
+                      <span><span className="font-semibold">Time:</span> {String(course.time_set).slice(0,5)} UTC</span>
                     </div>
                   )}
                 </div>

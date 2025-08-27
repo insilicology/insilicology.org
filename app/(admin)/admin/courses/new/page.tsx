@@ -226,8 +226,8 @@ export default function CreateCoursePage() {
           { name: "title", label: "কোর্স শিরোনাম" },
           { name: "slug", label: "Slug" },
           { name: "duration", label: "Course Duration" },
-          { name: "price_regular", label: "Regular Price" },
-          { name: "price_offer", label: "Offer Price" },
+          { name: "price_regular", label: "Regular Price (USD)" },
+          { name: "price_offer", label: "Offer Price (USD)" },
           { name: "description", label: "Description", isTextArea: true },
         ].map((field) => (
           <div key={field.name} className={field.isTextArea ? "md:col-span-2" : ""}>
@@ -325,8 +325,9 @@ export default function CreateCoursePage() {
           <input name="seats" value={form.seats} onChange={handleChange} className="w-full border rounded-lg px-3 py-2" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Time (HH:MM 24h)</label>
+          <label className="block text-sm font-medium text-gray-700">Time (HH:MM 24h UTC)</label>
           <input type="time" name="time_set" value={form.time_set} onChange={handleChange} className="w-full border rounded-lg px-3 py-2" />
+          <p className="text-xs text-gray-500 mt-1">All times are in UTC (Coordinated Universal Time)</p>
         </div>
 
         {/* Arrays */}

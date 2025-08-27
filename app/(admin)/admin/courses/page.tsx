@@ -97,10 +97,10 @@ export default function CoursesListPage() {
                 )}
                 <div className="text-sm">
                   <span className="line-through text-gray-400 mr-2">
-                    ৳{course.price_regular ?? "N/A"}
+                    ${course.price_regular ?? "N/A"}
                   </span>
                   <span className="text-green-600 font-bold">
-                    ৳{course.price_offer ?? course.price_regular ?? "N/A"}
+                    ${course.price_offer ?? course.price_regular ?? "N/A"}
                   </span>
                 </div>
                 <p className={`text-xs font-medium ${course.is_published ? "text-green-600" : "text-red-500"}`}>
